@@ -90,6 +90,12 @@ export default function RootLayout({
   return (
     <html lang="id" className={`scroll-smooth ${inter.variable}`}>
       <head>
+        {/* Google AdSense */}
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2430722067128619"
+          crossOrigin="anonymous"
+        />
         <JsonLd />
       </head>
       <body className="min-h-screen bg-ivory-50 text-slate-800 antialiased flex flex-col justify-between selection:bg-gold-200 selection:text-gold-900">
