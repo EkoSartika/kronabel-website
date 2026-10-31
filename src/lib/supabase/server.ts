@@ -11,7 +11,12 @@ export async function createClient() {
     return null;
   }
 
-  const supabaseUrl = rawUrl.trim().replace(/\/+$/, "");
+  let supabaseUrl = rawUrl.trim();
+  try {
+    supabaseUrl = new URL(supabaseUrl).origin;
+  } catch {
+    supabaseUrl = supabaseUrl.replace(/\/+$/, "");
+  }
   const supabaseAnonKey = rawKey.trim();
 
   return createServerClient(supabaseUrl, supabaseAnonKey, {
@@ -44,7 +49,7 @@ export async function getAuthenticatedAdmin() {
 
   const { data: adminRecord, error: adminError } = await supabase
     .from("admin_users")
-    .select("id, email, username, role")
+    .select("id, username, role")
     .eq("id", user.id)
     .single();
 
@@ -56,7 +61,12 @@ export async function getAuthenticatedAdmin() {
     supabase,
     user,
     role: adminRecord.role as AdminRole,
-    adminRecord,
+    adminRecord: {
+      id: adminRecord.id,
+      username: adminRecord.username,
+      role: adminRecord.role,
+      email: user.email || "",
+    },
   };
 }
 

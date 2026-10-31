@@ -8,7 +8,12 @@ export function createAdminClient() {
     return null;
   }
 
-  const supabaseUrl = rawUrl.trim().replace(/\/+$/, "");
+  let supabaseUrl = rawUrl.trim();
+  try {
+    supabaseUrl = new URL(supabaseUrl).origin;
+  } catch {
+    supabaseUrl = supabaseUrl.replace(/\/+$/, "");
+  }
   const serviceRoleKey = rawKey.trim();
 
   return createClient(supabaseUrl, serviceRoleKey, {

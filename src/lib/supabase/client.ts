@@ -8,7 +8,12 @@ export function createClient() {
     return null;
   }
 
-  const supabaseUrl = rawUrl.trim().replace(/\/+$/, "");
+  let supabaseUrl = rawUrl.trim();
+  try {
+    supabaseUrl = new URL(supabaseUrl).origin;
+  } catch {
+    supabaseUrl = supabaseUrl.replace(/\/+$/, "");
+  }
   const supabaseAnonKey = rawKey.trim();
 
   return createBrowserClient(supabaseUrl, supabaseAnonKey);

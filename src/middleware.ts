@@ -14,11 +14,11 @@ export async function middleware(request: NextRequest) {
     pathname !== "/admin/login" &&
     pathname !== "/admin/setup";
 
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const rawUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const rawAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
   // Jika env Supabase belum diatur dan pengguna membuka admin, arahkan ke panduan setup
-  if (!supabaseUrl || !supabaseAnonKey) {
+  if (!rawUrl || !rawAnonKey) {
     if (isProtectedAdminRoute) {
       const setupUrl = request.nextUrl.clone();
       setupUrl.pathname = "/admin/setup";
@@ -26,6 +26,14 @@ export async function middleware(request: NextRequest) {
     }
     return response;
   }
+
+  let supabaseUrl = rawUrl.trim();
+  try {
+    supabaseUrl = new URL(supabaseUrl).origin;
+  } catch {
+    supabaseUrl = supabaseUrl.replace(/\/+$/, "");
+  }
+  const supabaseAnonKey = rawAnonKey.trim();
 
   const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
     cookies: {

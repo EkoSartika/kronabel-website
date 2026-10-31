@@ -220,10 +220,12 @@ export async function POST(request: Request) {
       );
     }
 
+    const cleanEmail = String(email).trim().toLowerCase();
+
     // 1. Buat user di Supabase Auth
     const { data: authUser, error: authError } =
       await adminSupabase.auth.admin.createUser({
-        email,
+        email: cleanEmail,
         password,
         email_confirm: true,
         user_metadata: {
