@@ -22,26 +22,46 @@ SET is_public = true
 WHERE key IN ('general', 'donation', 'release');
 
 -- =============================================================================
--- PATCH 2: Tambah constraint dan kolom keamanan di tabel feedback (jika belum ada)
+-- PATCH 2: Tambah constraint dan kolom keamanan di tabel feedback & admin_users (jika belum ada)
 -- =============================================================================
 
--- Tambah column ip_hash jika masih menggunakan ip_address lama
+-- Tambah column ip_hash dan user_agent jika belum ada
+ALTER TABLE public.feedback
+    ADD COLUMN IF NOT EXISTS ip_hash TEXT CHECK (ip_hash IS NULL OR length(ip_hash) <= 64);
+
+ALTER TABLE public.feedback
+    ADD COLUMN IF NOT EXISTS user_agent TEXT CHECK (user_agent IS NULL OR length(user_agent) <= 200);
+
+-- Pastikan constraint role pada admin_users konsisten
 DO $$
 BEGIN
-  IF EXISTS (
-    SELECT 1 FROM information_schema.columns
+  IF NOT EXISTS (
+    SELECT 1 FROM information_schema.constraint_column_usage
+    WHERE table_schema = 'public'
+      AND table_name = 'admin_users'
+      AND constraint_name = 'admin_users_role_check'
+  ) THEN
+    ALTER TABLE public.admin_users
+      ADD CONSTRAINT admin_users_role_check
+      CHECK (role IN ('superadmin', 'admin', 'editor'));
+  END IF;
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;
+
+-- Pastikan constraint status pada feedback konsisten ('baru', 'dibaca', 'diproses', 'selesai')
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM information_schema.constraint_column_usage
     WHERE table_schema = 'public'
       AND table_name = 'feedback'
-      AND column_name = 'ip_address'
-  ) AND NOT EXISTS (
-    SELECT 1 FROM information_schema.columns
-    WHERE table_schema = 'public'
-      AND table_name = 'feedback'
-      AND column_name = 'ip_hash'
+      AND constraint_name = 'feedback_status_check'
   ) THEN
     ALTER TABLE public.feedback
-      ADD COLUMN ip_hash TEXT CHECK (ip_hash IS NULL OR length(ip_hash) <= 64);
+      ADD CONSTRAINT feedback_status_check
+      CHECK (status IN ('baru', 'dibaca', 'diproses', 'selesai'));
   END IF;
+EXCEPTION WHEN duplicate_object THEN NULL;
 END $$;
 
 -- Tambah constraint panjang pesan jika belum ada
@@ -51,7 +71,7 @@ BEGIN
     SELECT 1 FROM information_schema.constraint_column_usage
     WHERE table_schema = 'public'
       AND table_name = 'feedback'
-      AND constraint_name LIKE '%message%len%'
+      AND constraint_name = 'feedback_message_length'
   ) THEN
     ALTER TABLE public.feedback
       ADD CONSTRAINT feedback_message_length
@@ -158,9 +178,9 @@ BEGIN
     NEW.created_at := NOW();
     NEW.updated_at := NOW();
 
-    -- Jika panggilan dilakukan oleh anon atau client langsung (bukan service_role),
-    -- kosongkan ip_hash dan user_agent agar anon tidak bisa mengontrol metadata keamanan.
-    IF auth.role() = 'anon' OR auth.role() IS NULL THEN
+    -- Hanya request service_role yang diizinkan mengisi ip_hash dan user_agent.
+    -- Untuk anon, authenticated, atau role lain selain service_role, kedua metadata dipaksa NULL.
+    IF COALESCE(auth.role(), '') <> 'service_role' THEN
         NEW.ip_hash := NULL;
         NEW.user_agent := NULL;
     END IF;

@@ -107,9 +107,9 @@ BEGIN
     NEW.created_at := NOW();
     NEW.updated_at := NOW();
 
-    -- Jika panggilan dilakukan oleh anon atau client langsung (bukan service_role),
-    -- kosongkan ip_hash dan user_agent agar anon tidak bisa mengontrol metadata keamanan.
-    IF auth.role() = 'anon' OR auth.role() IS NULL THEN
+    -- Hanya request service_role yang diizinkan mengisi ip_hash dan user_agent.
+    -- Untuk anon, authenticated, atau role lain selain service_role, kedua metadata dipaksa NULL.
+    IF COALESCE(auth.role(), '') <> 'service_role' THEN
         NEW.ip_hash := NULL;
         NEW.user_agent := NULL;
     END IF;
