@@ -1,9 +1,11 @@
 import type { MetadataRoute } from "next";
 import { SITE_CONFIG } from "@/config/site";
 
+export const revalidate = 86400; // Cache sitemap selama 24 jam untuk Vercel Edge Cache
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = SITE_CONFIG.siteUrl;
-  const lastModified = new Date();
+  const lastModified = new Date("2026-10-31T00:00:00.000Z");
 
   return [
     {

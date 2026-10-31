@@ -28,12 +28,12 @@ export const metadata: Metadata = {
   title: `${SITE_CONFIG.brandName} — Aplikasi Bel Sekolah Otomatis Windows (Gratis & Offline)`,
   description: `Download ${SITE_CONFIG.brandName}, software bel sekolah otomatis gratis untuk PC Windows 10 & 11 (64-bit). Bekerja 100% offline, presisi tinggi, mendukung audio MP3 & WAV, multi-profil jadwal, dan tanpa biaya langganan.`,
   alternates: {
-    canonical: `${SITE_CONFIG.siteUrl}/`,
+    canonical: SITE_CONFIG.siteUrl,
   },
   openGraph: {
     title: `${SITE_CONFIG.brandName} — Aplikasi Bel Sekolah Otomatis Windows`,
     description: `Download ${SITE_CONFIG.brandName}, software bel sekolah otomatis gratis untuk Windows 10 & 11. Bekerja 100% offline dengan audio MP3/WAV dan multi-profil.`,
-    url: `${SITE_CONFIG.siteUrl}/`,
+    url: SITE_CONFIG.siteUrl,
     images: [
       {
         url: "/images/screenshot_real_compact.png",
