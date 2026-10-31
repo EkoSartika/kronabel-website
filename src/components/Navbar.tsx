@@ -16,6 +16,10 @@ export const Navbar: React.FC = () => {
     return pathname.startsWith(href);
   };
 
+  if (pathname?.startsWith("/admin")) {
+    return null;
+  }
+
   return (
     <header className="sticky top-0 z-50 border-b border-forest-900/10 bg-ivory-50/90 backdrop-blur-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">

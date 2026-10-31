@@ -1,0 +1,117 @@
+import { NextResponse } from "next/server";
+import { createAdminClient } from "@/lib/supabase/admin";
+
+export async function POST(request: Request) {
+  try {
+    const adminSupabase = createAdminClient();
+    if (!adminSupabase) {
+      return NextResponse.json(
+        {
+          error:
+            "Koneksi Service Role Supabase belum dikonfigurasi. Pastikan NEXT_PUBLIC_SUPABASE_URL dan SUPABASE_SERVICE_ROLE_KEY telah diatur di Environment Variables.",
+        },
+        { status: 503 }
+      );
+    }
+
+    // Periksa apakah sudah ada admin terdaftar di sistem
+    const { count, error: countError } = await adminSupabase
+      .from("admin_users")
+      .select("*", { count: "exact", head: true });
+
+    if (countError) {
+      return NextResponse.json(
+        {
+          error:
+            "Tabel admin_users belum ditemukan. Silakan jalankan migration SQL pada Dashboard Supabase terlebih dahulu.",
+          detail: countError.message,
+        },
+        { status: 400 }
+      );
+    }
+
+    // Jika sudah ada admin, tolak inisialisasi ulang
+    if (count && count > 0) {
+      return NextResponse.json(
+        {
+          error:
+            "Sistem sudah memiliki akun administrator aktif. Inisialisasi awal hanya dapat dilakukan satu kali untuk keamanan.",
+        },
+        { status: 403 }
+      );
+    }
+
+    const { email, password, username, setupSecret } = await request.json();
+
+    // Verifikasi setupSecret jika ADMIN_SETUP_SECRET didefinisikan di environment
+    const requiredSecret = process.env.ADMIN_SETUP_SECRET;
+    if (requiredSecret && setupSecret !== requiredSecret) {
+      return NextResponse.json(
+        { error: "Token rahasia inisialisasi (ADMIN_SETUP_SECRET) tidak valid." },
+        { status: 403 }
+      );
+    }
+
+    if (!email || !password || password.length < 8) {
+      return NextResponse.json(
+        { error: "Email wajib diisi dan kata sandi minimal 8 karakter." },
+        { status: 400 }
+      );
+    }
+
+    // Cegah penggunaan password bawaan yang tidak aman
+    if (password.toLowerCase() === "admin" || password.toLowerCase() === "admin123" || password.toLowerCase() === "password") {
+      return NextResponse.json(
+        { error: "Kata sandi terlalu mudah ditebak. Harap gunakan kata sandi yang lebih kuat." },
+        { status: 400 }
+      );
+    }
+
+    // 1. Buat user di Supabase Auth
+    const { data: authUser, error: authError } =
+      await adminSupabase.auth.admin.createUser({
+        email,
+        password,
+        email_confirm: true,
+        user_metadata: {
+          username: username || "admin",
+          role: "superadmin",
+        },
+      });
+
+    if (authError || !authUser.user) {
+      return NextResponse.json(
+        { error: authError?.message || "Gagal membuat akun autentikasi Supabase." },
+        { status: 400 }
+      );
+    }
+
+    // 2. Daftarkan di tabel admin_users
+    const { error: dbError } = await adminSupabase.from("admin_users").insert({
+      id: authUser.user.id,
+      username: username || "admin",
+      role: "superadmin",
+    });
+
+    if (dbError) {
+      // Rollback auth user jika insert tabel gagal
+      await adminSupabase.auth.admin.deleteUser(authUser.user.id);
+      return NextResponse.json(
+        { error: "Gagal menyimpan data administrator ke tabel admin_users: " + dbError.message },
+        { status: 500 }
+      );
+    }
+
+    return NextResponse.json({
+      success: true,
+      message:
+        "Akun administrator pertama berhasil dibuat. Silakan login ke Dashboard Admin KRONABEL.",
+    });
+  } catch {
+    return NextResponse.json(
+      { error: "Terjadi kesalahan internal pada server saat inisialisasi admin." },
+      { status: 500 }
+    );
+  }
+}
+

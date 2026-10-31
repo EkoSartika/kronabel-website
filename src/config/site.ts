@@ -67,6 +67,7 @@ export const SITE_CONFIG = {
     { name: "Panduan Penggunaan", href: "/panduan" },
     { name: "Riwayat Versi (Changelog)", href: "/riwayat-versi" },
     { name: "Tentang KRONABEL", href: "/tentang" },
+    { name: "Saran & Masukan", href: "/masukan" },
     { name: "Kebijakan Privasi", href: "/privasi" },
     { name: "Pusat Unduhan", href: "/unduh" },
   ],
