@@ -19,7 +19,9 @@ Panduan ini berisi langkah-langkah praktis untuk mengaktifkan sistem Content Man
 
 1. Di dashboard Supabase, buka menu **SQL Editor** pada navigasi sebelah kiri.
 2. Klik **New query**.
-3. Buka berkas `supabase/migrations/20261031_kronabel_cms_init.sql` di repository ini, lalu salin seluruh kodenya dan tempel ke SQL Editor Supabase.
+3. Pilih skrip migration yang sesuai:
+   - **Database Baru/Kosong**: Buka berkas `supabase/migrations/20261031_kronabel_cms_init.sql` (versi hardening v2), lalu salin seluruh kodenya dan tempel ke SQL Editor.
+   - **Database Sudah Ada Tabel**: Buka berkas `supabase/migrations/20261031_security_patch.sql` untuk menerapkan patch penguatan RLS, trigger status feedback, search_path `is_admin()`, dan pemisahan `is_public` tanpa menghapus data yang ada.
 4. Klik tombol **Run** (atau tekan `Ctrl + Enter`).
 5. Periksa pesan eksekusi: pastikan muncul keterangan `Success. No rows returned`.
 
