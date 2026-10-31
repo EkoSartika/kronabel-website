@@ -1,9 +1,23 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ShieldCheck, Mail, Lock, User, KeyRound, AlertCircle, CheckCircle2, ArrowRight } from "lucide-react";
+import { ShieldCheck, Mail, Lock, User, KeyRound, AlertCircle, CheckCircle2, ArrowRight, Database, RefreshCw, Server } from "lucide-react";
+
+interface SetupStatus {
+  configured: boolean;
+  connected?: boolean;
+  projectHost?: string;
+  hasSetupSecret?: boolean;
+  adminCount?: number;
+  isSetupLocked?: boolean;
+  userGuidance?: string;
+  errorCategory?: string;
+  code?: string | null;
+  message?: string | null;
+  error?: string;
+}
 
 export default function AdminSetupPage() {
   const router = useRouter();
@@ -15,6 +29,28 @@ export default function AdminSetupPage() {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [status, setStatus] = useState<SetupStatus | null>(null);
+  const [statusLoading, setStatusLoading] = useState(true);
+
+  const checkStatus = async () => {
+    setStatusLoading(true);
+    try {
+      const res = await fetch("/api/admin/setup");
+      const data = await res.json();
+      setStatus(data);
+    } catch {
+      setStatus({
+        configured: false,
+        error: "Gagal menghubungi server aplikasi.",
+      });
+    } finally {
+      setStatusLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    checkStatus();
+  }, []);
 
   const handleSetup = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -73,6 +109,56 @@ export default function AdminSetupPage() {
             Daftarkan akun administrator utama pertama untuk KRONABEL CMS.
           </p>
         </div>
+
+        {/* Diagnostic Status Box */}
+        {statusLoading ? (
+          <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-500 text-xs flex items-center gap-2">
+            <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+            <span>Memeriksa status koneksi database Supabase...</span>
+          </div>
+        ) : status && status.connected ? (
+          <div className="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200/80 text-emerald-900 text-xs space-y-1">
+            <div className="flex items-center gap-2 font-semibold">
+              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+              <span>Database Terhubung</span>
+            </div>
+            <p className="text-[11px] text-emerald-800">
+              Target Project: <code className="font-mono bg-emerald-100/70 px-1 py-0.5 rounded">{status.projectHost}</code>
+            </p>
+          </div>
+        ) : status && !status.connected ? (
+          <div className="p-4 rounded-2xl bg-red-50 border border-red-200 text-red-900 text-xs space-y-2">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-1.5 font-bold text-red-800">
+                <AlertCircle className="w-4 h-4 text-red-600" />
+                <span>Koneksi Database Terkendala</span>
+              </div>
+              <button
+                type="button"
+                onClick={checkStatus}
+                className="inline-flex items-center gap-1 text-[11px] text-red-700 hover:text-red-900 font-semibold"
+              >
+                <RefreshCw className="w-3 h-3" />
+                <span>Cek Ulang</span>
+              </button>
+            </div>
+            {status.projectHost && (
+              <p className="text-[11px] text-slate-600">
+                Project terpasang di Vercel: <code className="font-mono bg-white px-1.5 py-0.5 rounded border border-red-200 text-slate-800 font-semibold">{status.projectHost}</code>
+              </p>
+            )}
+            {status.userGuidance && (
+              <p className="leading-relaxed text-[11px] text-red-800 font-medium bg-white/70 p-2 rounded-xl border border-red-100">
+                {status.userGuidance}
+              </p>
+            )}
+            {status.code && (
+              <p className="text-[10px] text-slate-500 font-mono">
+                Error Code: {status.code}
+              </p>
+            )}
+          </div>
+        ) : null}
 
         {/* Notice Info Box */}
         <div className="p-4 rounded-2xl bg-amber-50/80 border border-amber-200 text-xs text-amber-950 space-y-1">

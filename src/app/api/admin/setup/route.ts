@@ -1,6 +1,118 @@
 import { NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 
+export async function GET() {
+  try {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const hasServiceKey = Boolean(process.env.SUPABASE_SERVICE_ROLE_KEY);
+    const hasAnonKey = Boolean(process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+    const hasSetupSecret = Boolean(process.env.ADMIN_SETUP_SECRET);
+
+    if (!supabaseUrl || !hasServiceKey) {
+      return NextResponse.json(
+        {
+          configured: false,
+          error: "Environment variables Supabase belum lengkap di Vercel.",
+          hasUrl: Boolean(supabaseUrl),
+          hasServiceKey,
+          hasAnonKey,
+          hasSetupSecret,
+        },
+        { status: 503 }
+      );
+    }
+
+    let projectHost = "";
+    try {
+      projectHost = new URL(supabaseUrl).host;
+    } catch {
+      projectHost = "Format URL tidak valid";
+    }
+
+    const adminSupabase = createAdminClient();
+    if (!adminSupabase) {
+      return NextResponse.json(
+        {
+          configured: false,
+          error: "Gagal menginisialisasi klien Supabase Admin.",
+        },
+        { status: 500 }
+      );
+    }
+
+    // Uji koneksi tabel admin_users
+    const { count, error: countError } = await adminSupabase
+      .from("admin_users")
+      .select("*", { count: "exact", head: true });
+
+    if (countError) {
+      const errMsg = countError.message || countError.details || countError.hint || "";
+      const isTableNotFound =
+        countError.code === "PGRST205" ||
+        countError.code === "42P01" ||
+        errMsg.toLowerCase().includes("does not exist") ||
+        errMsg.toLowerCase().includes("not found");
+      const isAuthError =
+        countError.code === "PGRST301" ||
+        errMsg.toLowerCase().includes("jwt") ||
+        errMsg.toLowerCase().includes("api key") ||
+        errMsg.toLowerCase().includes("unauthorized");
+
+      let errorCategory = "DATABASE_ERROR";
+      let userGuidance = "Terjadi kesalahan saat memeriksa database.";
+
+      if (isTableNotFound) {
+        errorCategory = "TABLE_NOT_FOUND";
+        userGuidance = `Tabel public.admin_users tidak ditemukan pada project '${projectHost}'. Kemungkinan migration dijalankan di project Supabase yang berbeda dengan URL di Vercel, atau schema cache belum ter-reload.`;
+      } else if (isAuthError) {
+        errorCategory = "INVALID_CREDENTIALS";
+        userGuidance = `Kunci SUPABASE_SERVICE_ROLE_KEY yang terpasang di Vercel tidak sah untuk project '${projectHost}'. Pastikan menyalin service_role secret key yang sesuai dari project tersebut.`;
+      }
+
+      return NextResponse.json(
+        {
+          configured: true,
+          connected: false,
+          projectHost,
+          hasSetupSecret,
+          errorCategory,
+          userGuidance,
+          code: countError.code || null,
+          message: countError.message || null,
+          details: countError.details || null,
+          hint: countError.hint || null,
+        },
+        { status: 200 }
+      );
+    }
+
+    const adminCount = count || 0;
+
+    return NextResponse.json({
+      configured: true,
+      connected: true,
+      projectHost,
+      hasSetupSecret,
+      adminCount,
+      isSetupLocked: adminCount > 0,
+      message:
+        adminCount > 0
+          ? "Sistem sudah memiliki administrator aktif. Form setup dinonaktifkan."
+          : "Database Supabase terhubung dengan baik. Siap membuat akun administrator pertama.",
+    });
+  } catch (err: unknown) {
+    const error = err as Error;
+    return NextResponse.json(
+      {
+        configured: false,
+        error: "Terjadi kesalahan internal saat memeriksa status koneksi.",
+        detail: error?.message || String(err),
+      },
+      { status: 500 }
+    );
+  }
+}
+
 export async function POST(request: Request) {
   try {
     const adminSupabase = createAdminClient();
@@ -20,11 +132,30 @@ export async function POST(request: Request) {
       .select("*", { count: "exact", head: true });
 
     if (countError) {
+      const errMsg = countError.message || countError.details || countError.hint || "";
+      const isTableNotFound =
+        countError.code === "PGRST205" ||
+        countError.code === "42P01" ||
+        errMsg.toLowerCase().includes("does not exist") ||
+        errMsg.toLowerCase().includes("not found");
+      const isAuthError =
+        countError.code === "PGRST301" ||
+        errMsg.toLowerCase().includes("jwt") ||
+        errMsg.toLowerCase().includes("api key") ||
+        errMsg.toLowerCase().includes("unauthorized");
+
+      let errorMsg = "Tabel admin_users belum dapat diakses di database Supabase.";
+      if (isTableNotFound) {
+        errorMsg = "Tabel admin_users belum ditemukan di database proyek Supabase yang terhubung ke Vercel.";
+      } else if (isAuthError) {
+        errorMsg = "Kunci SUPABASE_SERVICE_ROLE_KEY di Vercel tidak cocok dengan proyek Supabase ini (Invalid Key).";
+      }
+
       return NextResponse.json(
         {
-          error:
-            "Tabel admin_users belum ditemukan. Silakan jalankan migration SQL pada Dashboard Supabase terlebih dahulu.",
-          detail: countError.message,
+          error: errorMsg,
+          code: countError.code || null,
+          detail: countError.message || countError.details || countError.hint || "Pemeriksaan tabel gagal",
         },
         { status: 400 }
       );
