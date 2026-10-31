@@ -1,19 +1,15 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { revalidatePath } from "next/cache";
-import { createClient } from "@/lib/supabase/server";
+import { getAuthenticatedAdmin } from "@/lib/supabase/server";
 
 export async function GET() {
   try {
-    const supabase = await createClient();
-    if (!supabase) {
-      return NextResponse.json({ error: "Supabase belum terkonfigurasi." }, { status: 503 });
+    const auth = await getAuthenticatedAdmin();
+    if (!auth || !auth.user || !auth.role) {
+      return NextResponse.json({ error: "Sesi admin tidak sah." }, { status: 401 });
     }
 
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-      return NextResponse.json({ error: "Sesi tidak sah." }, { status: 401 });
-    }
-
+    const { supabase } = auth;
     const { data, error } = await supabase.from("site_settings").select("*");
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
@@ -32,16 +28,20 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
-    const supabase = await createClient();
-    if (!supabase) {
-      return NextResponse.json({ error: "Supabase belum terkonfigurasi." }, { status: 503 });
+    const auth = await getAuthenticatedAdmin();
+    if (!auth || !auth.user || !auth.role) {
+      return NextResponse.json({ error: "Sesi admin tidak sah." }, { status: 401 });
     }
 
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-      return NextResponse.json({ error: "Sesi tidak sah." }, { status: 401 });
+    // Role check: hanya superadmin dan admin yang boleh ubah pengaturan website
+    if (auth.role !== "superadmin" && auth.role !== "admin") {
+      return NextResponse.json(
+        { error: "Peran Editor tidak memiliki izin untuk mengubah konfigurasi dan pengaturan website." },
+        { status: 403 }
+      );
     }
 
+    const { supabase, user } = auth;
     const body = await request.json();
     const { key, value, description } = body;
 

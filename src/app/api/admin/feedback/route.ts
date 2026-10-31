@@ -1,18 +1,14 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { getAuthenticatedAdmin } from "@/lib/supabase/server";
 
 export async function GET(request: NextRequest) {
   try {
-    const supabase = await createClient();
-    if (!supabase) {
-      return NextResponse.json({ error: "Supabase belum terkonfigurasi." }, { status: 503 });
+    const auth = await getAuthenticatedAdmin();
+    if (!auth || !auth.user || !auth.role) {
+      return NextResponse.json({ error: "Sesi admin tidak sah." }, { status: 401 });
     }
 
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-      return NextResponse.json({ error: "Sesi tidak sah." }, { status: 401 });
-    }
-
+    const { supabase } = auth;
     const searchParams = request.nextUrl.searchParams;
     const category = searchParams.get("category");
     const status = searchParams.get("status");
@@ -61,16 +57,19 @@ export async function GET(request: NextRequest) {
 
 export async function PATCH(request: NextRequest) {
   try {
-    const supabase = await createClient();
-    if (!supabase) {
-      return NextResponse.json({ error: "Supabase belum terkonfigurasi." }, { status: 503 });
+    const auth = await getAuthenticatedAdmin();
+    if (!auth || !auth.user || !auth.role) {
+      return NextResponse.json({ error: "Sesi admin tidak sah." }, { status: 401 });
     }
 
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-      return NextResponse.json({ error: "Sesi tidak sah." }, { status: 401 });
+    if (auth.role !== "superadmin" && auth.role !== "admin") {
+      return NextResponse.json(
+        { error: "Peran Editor tidak memiliki izin untuk memperbarui status masukan." },
+        { status: 403 }
+      );
     }
 
+    const { supabase } = auth;
     const body = await request.json();
     const { id, status } = body;
 
@@ -98,16 +97,19 @@ export async function PATCH(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   try {
-    const supabase = await createClient();
-    if (!supabase) {
-      return NextResponse.json({ error: "Supabase belum terkonfigurasi." }, { status: 503 });
+    const auth = await getAuthenticatedAdmin();
+    if (!auth || !auth.user || !auth.role) {
+      return NextResponse.json({ error: "Sesi admin tidak sah." }, { status: 401 });
     }
 
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-      return NextResponse.json({ error: "Sesi tidak sah." }, { status: 401 });
+    if (auth.role !== "superadmin" && auth.role !== "admin") {
+      return NextResponse.json(
+        { error: "Peran Editor tidak memiliki izin untuk menghapus masukan." },
+        { status: 403 }
+      );
     }
 
+    const { supabase } = auth;
     const id = request.nextUrl.searchParams.get("id");
     if (!id) {
       return NextResponse.json({ error: "ID masukan wajib disertakan." }, { status: 400 });

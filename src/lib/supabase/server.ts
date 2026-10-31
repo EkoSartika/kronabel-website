@@ -30,3 +30,30 @@ export async function createClient() {
   });
 }
 
+export type AdminRole = "superadmin" | "admin" | "editor";
+
+export async function getAuthenticatedAdmin() {
+  const supabase = await createClient();
+  if (!supabase) return null;
+
+  const { data: { user }, error: userError } = await supabase.auth.getUser();
+  if (userError || !user) return null;
+
+  const { data: adminRecord, error: adminError } = await supabase
+    .from("admin_users")
+    .select("id, email, username, role")
+    .eq("id", user.id)
+    .single();
+
+  if (adminError || !adminRecord) {
+    return { supabase, user, role: null as AdminRole | null };
+  }
+
+  return {
+    supabase,
+    user,
+    role: adminRecord.role as AdminRole,
+    adminRecord,
+  };
+}
+

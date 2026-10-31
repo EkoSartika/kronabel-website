@@ -1,19 +1,15 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { revalidatePath } from "next/cache";
-import { createClient } from "@/lib/supabase/server";
+import { getAuthenticatedAdmin } from "@/lib/supabase/server";
 
 export async function GET(request: NextRequest) {
   try {
-    const supabase = await createClient();
-    if (!supabase) {
-      return NextResponse.json({ error: "Supabase belum terkonfigurasi." }, { status: 503 });
+    const auth = await getAuthenticatedAdmin();
+    if (!auth || !auth.user || !auth.role) {
+      return NextResponse.json({ error: "Sesi admin tidak sah." }, { status: 401 });
     }
 
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-      return NextResponse.json({ error: "Sesi tidak sah." }, { status: 401 });
-    }
-
+    const { supabase } = auth;
     const page = request.nextUrl.searchParams.get("page");
     let query = supabase.from("site_content").select("*").order("updated_at", { ascending: false });
 
@@ -34,16 +30,12 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const supabase = await createClient();
-    if (!supabase) {
-      return NextResponse.json({ error: "Supabase belum terkonfigurasi." }, { status: 503 });
+    const auth = await getAuthenticatedAdmin();
+    if (!auth || !auth.user || !auth.role) {
+      return NextResponse.json({ error: "Sesi admin tidak sah." }, { status: 401 });
     }
 
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-      return NextResponse.json({ error: "Sesi tidak sah." }, { status: 401 });
-    }
-
+    const { supabase, user } = auth;
     const body = await request.json();
     const { key, page, section, title, content, status } = body;
 

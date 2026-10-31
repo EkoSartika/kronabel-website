@@ -82,7 +82,16 @@ CREATE INDEX IF NOT EXISTS idx_content_history_key ON public.content_history(con
 
 -- =============================================================================
 -- TRIGGER: Kunci status feedback ke 'baru' saat INSERT publik
--- Admin mengubah status via UPDATE (bukan INSERT), sehingga ini aman.
+-- =============================================================================
+-- TRIGGER: enforce_feedback_insert_defaults()
+-- Memastikan integritas data feedback publik:
+--   1. Status SELALU 'baru' saat INSERT (pengunjung tidak bisa langsung set 'selesai').
+--   2. Created_at dan updated_at selalu menggunakan waktu database saat ini.
+--   3. Proteksi metadata: jika dipanggil langsung oleh anon / client tanpa service_role,
+--      ip_hash dan user_agent dipaksa NULL agar pengunjung tidak dapat memalsukan metadata keamanan.
+--      Hanya API server terpercaya (service_role) yang dapat mengisi ip_hash dan user_agent.
+-- Trigger ini HANYA berjalan BEFORE INSERT, sehingga proses admin mengubah status
+-- via UPDATE sama sekali tidak terganggu.
 -- =============================================================================
 CREATE OR REPLACE FUNCTION public.enforce_feedback_insert_defaults()
 RETURNS TRIGGER
@@ -91,11 +100,20 @@ SECURITY DEFINER
 SET search_path = public, pg_catalog
 AS $$
 BEGIN
-    -- Paksa status selalu 'baru' saat INSERT (anon maupun authenticated)
+    -- Paksa status selalu 'baru' saat INSERT
     NEW.status := 'baru';
-    -- Pastikan created_at dan updated_at tidak bisa dimanipulasi dari luar
+
+    -- Kunci timestamp database
     NEW.created_at := NOW();
     NEW.updated_at := NOW();
+
+    -- Jika panggilan dilakukan oleh anon atau client langsung (bukan service_role),
+    -- kosongkan ip_hash dan user_agent agar anon tidak bisa mengontrol metadata keamanan.
+    IF auth.role() = 'anon' OR auth.role() IS NULL THEN
+        NEW.ip_hash := NULL;
+        NEW.user_agent := NULL;
+    END IF;
+
     RETURN NEW;
 END;
 $$;
@@ -116,12 +134,32 @@ ALTER TABLE public.feedback ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.content_history ENABLE ROW LEVEL SECURITY;
 
 -- =============================================================================
--- HELPER FUNCTION: is_admin()
--- Diperkuat:
---   - search_path dikunci ke public & pg_catalog (mencegah search_path injection)
---   - Menggunakan nama schema-qualified secara eksplisit
---   - SECURITY DEFINER tetap (diperlukan agar RLS bisa memanggil tanpa rekursi)
+-- HELPER FUNCTIONS (SECURITY DEFINER)
+-- Menghindari rekursi tak hingga (infinite recursion) pada evaluasi RLS.
+-- Semua search_path dikunci eksplisit ke public, pg_catalog.
 -- =============================================================================
+
+-- Membaca role admin pengguna aktif tanpa memicu RLS loop pada tabel admin_users
+CREATE OR REPLACE FUNCTION public.current_admin_role()
+RETURNS TEXT
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public, pg_catalog
+AS $$
+DECLARE
+  v_role TEXT;
+BEGIN
+  SELECT au.role INTO v_role
+  FROM public.admin_users au
+  WHERE au.id = auth.uid();
+  RETURN v_role;
+END;
+$$;
+
+REVOKE ALL ON FUNCTION public.current_admin_role() FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION public.current_admin_role() TO authenticated;
+
+-- Memeriksa apakah pengguna aktif terdaftar di admin_users
 CREATE OR REPLACE FUNCTION public.is_admin()
 RETURNS BOOLEAN
 LANGUAGE plpgsql
@@ -137,10 +175,39 @@ BEGIN
 END;
 $$;
 
--- Revoke execute dari public (hanya dipanggil internal DB/RLS)
 REVOKE ALL ON FUNCTION public.is_admin() FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION public.is_admin() TO authenticated;
-GRANT EXECUTE ON FUNCTION public.is_admin() TO anon;  -- diperlukan agar RLS policies on anon bisa evaluasi
+GRANT EXECUTE ON FUNCTION public.is_admin() TO anon;
+
+-- Memeriksa apakah pengguna aktif adalah superadmin
+CREATE OR REPLACE FUNCTION public.is_superadmin()
+RETURNS BOOLEAN
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public, pg_catalog
+AS $$
+BEGIN
+  RETURN public.current_admin_role() = 'superadmin';
+END;
+$$;
+
+REVOKE ALL ON FUNCTION public.is_superadmin() FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION public.is_superadmin() TO authenticated;
+
+-- Memeriksa apakah pengguna aktif boleh mengelola konfigurasi/pengaturan sensitif (superadmin dan admin)
+CREATE OR REPLACE FUNCTION public.can_manage_settings()
+RETURNS BOOLEAN
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public, pg_catalog
+AS $$
+BEGIN
+  RETURN public.current_admin_role() IN ('superadmin', 'admin');
+END;
+$$;
+
+REVOKE ALL ON FUNCTION public.can_manage_settings() FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION public.can_manage_settings() TO authenticated;
 
 -- =============================================================================
 -- RLS: admin_users
@@ -151,41 +218,63 @@ ON public.admin_users FOR SELECT
 TO authenticated
 USING (public.is_admin());
 
--- UPDATE: admin hanya boleh ubah username sendiri, TIDAK BOLEH ubah role
+-- UPDATE: Superadmin dapat mengubah role/profil admin lain.
+-- Admin/editor biasa HANYA dapat mengubah profil diri sendiri tanpa menaikkan role.
+-- Evaluasi role menggunakan helper function bebas dari rekursi tabel.
 DROP POLICY IF EXISTS "Admins can update own admin profile" ON public.admin_users;
-CREATE POLICY "Admins can update own username only"
+DROP POLICY IF EXISTS "Admins can update own username only" ON public.admin_users;
+DROP POLICY IF EXISTS "Admins can update own admin profile or superadmin can manage" ON public.admin_users;
+CREATE POLICY "Admins can update own admin profile or superadmin can manage"
 ON public.admin_users FOR UPDATE
 TO authenticated
-USING (id = auth.uid() AND public.is_admin())
+USING (
+    public.is_superadmin()
+    OR (id = auth.uid() AND public.is_admin())
+)
 WITH CHECK (
-    id = auth.uid()
-    -- role tidak boleh diubah melalui RLS path (perubahan role hanya via service_role / admin API)
-    AND role = (SELECT role FROM public.admin_users WHERE id = auth.uid())
+    public.is_superadmin()
+    OR (id = auth.uid() AND role = public.current_admin_role())
 );
+
+DROP POLICY IF EXISTS "Superadmins can insert admin_users" ON public.admin_users;
+CREATE POLICY "Superadmins can insert admin_users"
+ON public.admin_users FOR INSERT
+TO authenticated
+WITH CHECK (public.is_superadmin());
+
+DROP POLICY IF EXISTS "Superadmins can delete admin_users" ON public.admin_users;
+CREATE POLICY "Superadmins can delete admin_users"
+ON public.admin_users FOR DELETE
+TO authenticated
+USING (public.is_superadmin());
 
 -- =============================================================================
 -- RLS: site_settings
 -- Publik (anon): hanya bisa baca key yang is_public = true
--- Admin: dapat membaca dan mengelola semua key
+-- Admin: dapat membaca semua key
+-- Pengelolaan (ALL): hanya superadmin dan admin (editor dilarang)
 -- =============================================================================
 DROP POLICY IF EXISTS "Public can view public site settings" ON public.site_settings;
+DROP POLICY IF EXISTS "Anon can view public site settings only" ON public.site_settings;
 CREATE POLICY "Anon can view public site settings only"
 ON public.site_settings FOR SELECT
 TO anon
 USING (is_public = true);
 
 DROP POLICY IF EXISTS "Authenticated can view public site settings" ON public.site_settings;
+DROP POLICY IF EXISTS "Admins can view all site settings" ON public.site_settings;
 CREATE POLICY "Admins can view all site settings"
 ON public.site_settings FOR SELECT
 TO authenticated
 USING (is_public = true OR public.is_admin());
 
 DROP POLICY IF EXISTS "Admins can manage site settings" ON public.site_settings;
-CREATE POLICY "Admins can manage site settings"
+DROP POLICY IF EXISTS "Admins and superadmins can manage site settings" ON public.site_settings;
+CREATE POLICY "Admins and superadmins can manage site settings"
 ON public.site_settings FOR ALL
 TO authenticated
-USING (public.is_admin())
-WITH CHECK (public.is_admin());
+USING (public.can_manage_settings())
+WITH CHECK (public.can_manage_settings());
 
 -- =============================================================================
 -- RLS: site_content
@@ -205,25 +294,24 @@ WITH CHECK (public.is_admin());
 
 -- =============================================================================
 -- RLS: feedback
--- INSERT: anon & authenticated, TAPI field yang diizinkan sangat terbatas.
---   - id, status, created_at, updated_at dikontrol oleh trigger & DB default
---   - ip_hash, user_agent diisi oleh server (API route), BUKAN dari client body
---   - RLS hanya memvalidasi field konten (name, email, category, message)
--- SELECT/UPDATE/DELETE: hanya admin
+-- INSERT: anon & authenticated, dibatasi kolom konten (name, email, category, message).
+--   - ip_hash, user_agent, status, created_at, updated_at dikontrol oleh trigger.
+-- SELECT: semua admin (superadmin, admin, editor)
+-- UPDATE & DELETE: hanya superadmin dan admin (editor dilarang)
 -- =============================================================================
 DROP POLICY IF EXISTS "Anyone can insert feedback" ON public.feedback;
+DROP POLICY IF EXISTS "Public can submit feedback (content only)" ON public.feedback;
 CREATE POLICY "Public can submit feedback (content only)"
 ON public.feedback FOR INSERT
 TO anon, authenticated
 WITH CHECK (
-    -- Validasi konten
     message IS NOT NULL
     AND length(trim(message)) >= 5
     AND length(message) <= 3000
     AND category IN ('saran', 'kritik', 'bug', 'fitur', 'lainnya')
-    -- name & email opsional tapi dibatasi panjangnya
     AND (name IS NULL OR length(name) <= 100)
     AND (email IS NULL OR length(email) <= 100)
+    AND (status IS NULL OR status = 'baru')
 );
 
 DROP POLICY IF EXISTS "Only admins can view feedback" ON public.feedback;
@@ -233,17 +321,20 @@ TO authenticated
 USING (public.is_admin());
 
 DROP POLICY IF EXISTS "Only admins can update or delete feedback" ON public.feedback;
-CREATE POLICY "Only admins can update feedback"
+DROP POLICY IF EXISTS "Only admins can update feedback" ON public.feedback;
+DROP POLICY IF EXISTS "Admins and superadmins can update feedback" ON public.feedback;
+CREATE POLICY "Admins and superadmins can update feedback"
 ON public.feedback FOR UPDATE
 TO authenticated
-USING (public.is_admin())
-WITH CHECK (public.is_admin());
+USING (public.can_manage_settings())
+WITH CHECK (public.can_manage_settings());
 
 DROP POLICY IF EXISTS "Only admins can delete feedback" ON public.feedback;
-CREATE POLICY "Only admins can delete feedback"
+DROP POLICY IF EXISTS "Admins and superadmins can delete feedback" ON public.feedback;
+CREATE POLICY "Admins and superadmins can delete feedback"
 ON public.feedback FOR DELETE
 TO authenticated
-USING (public.is_admin());
+USING (public.can_manage_settings());
 
 -- =============================================================================
 -- RLS: content_history

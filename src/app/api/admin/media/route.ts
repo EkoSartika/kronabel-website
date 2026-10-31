@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { getAuthenticatedAdmin } from "@/lib/supabase/server";
 
 // MIME types yang diizinkan: SVG dihapus (risiko XSS), ICO dihapus
 const ALLOWED_MIME_TYPES = ["image/jpeg", "image/png", "image/webp"];
@@ -8,16 +8,12 @@ const MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024; // 5 MB
 
 export async function GET() {
   try {
-    const supabase = await createClient();
-    if (!supabase) {
-      return NextResponse.json({ error: "Supabase belum terkonfigurasi." }, { status: 503 });
+    const auth = await getAuthenticatedAdmin();
+    if (!auth || !auth.user || !auth.role) {
+      return NextResponse.json({ error: "Sesi admin tidak sah." }, { status: 401 });
     }
 
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-      return NextResponse.json({ error: "Sesi tidak sah." }, { status: 401 });
-    }
-
+    const { supabase } = auth;
     const { data: files, error } = await supabase.storage
       .from("website-media")
       .list("", { sortBy: { column: "created_at", order: "desc" } });
@@ -45,16 +41,12 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
-    const supabase = await createClient();
-    if (!supabase) {
-      return NextResponse.json({ error: "Supabase belum terkonfigurasi." }, { status: 503 });
+    const auth = await getAuthenticatedAdmin();
+    if (!auth || !auth.user || !auth.role) {
+      return NextResponse.json({ error: "Sesi admin tidak sah." }, { status: 401 });
     }
 
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-      return NextResponse.json({ error: "Sesi tidak sah." }, { status: 401 });
-    }
-
+    const { supabase } = auth;
     const formData = await request.formData();
     const file = formData.get("file") as File | null;
 
@@ -124,15 +116,12 @@ export async function POST(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   try {
-    const supabase = await createClient();
-    if (!supabase) {
-      return NextResponse.json({ error: "Supabase belum terkonfigurasi." }, { status: 503 });
+    const auth = await getAuthenticatedAdmin();
+    if (!auth || !auth.user || !auth.role) {
+      return NextResponse.json({ error: "Sesi admin tidak sah." }, { status: 401 });
     }
 
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-      return NextResponse.json({ error: "Sesi tidak sah." }, { status: 401 });
-    }
+    const { supabase } = auth;
 
     // Gunakan query param "name" (konsisten dengan admin/media page.tsx)
     const filename = request.nextUrl.searchParams.get("name") ||
