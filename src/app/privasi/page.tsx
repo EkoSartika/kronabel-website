@@ -4,15 +4,29 @@ import { ShieldCheck, HardDrive, Globe, Download, Heart, Lock, CheckCircle2 } fr
 import { SITE_CONFIG } from "@/config/site";
 
 export const metadata: Metadata = {
-  title: `Kebijakan Privasi - ${SITE_CONFIG.brandName}`,
-  description: `Kebijakan privasi resmi ${SITE_CONFIG.brandName} (${SITE_CONFIG.brandSubtitle}). Penjelasan transparansi pengelolaan data aplikasi offline, situs web, unduhan, dan donasi.`,
+  title: `Kebijakan Privasi — ${SITE_CONFIG.brandName} Bel Sekolah Offline`,
+  description: `Kebijakan privasi resmi ${SITE_CONFIG.brandName}. Jaminan 100% offline, bebas telemetri, tanpa pelacakan data, dan keamanan database jadwal sekolah lokal.`,
   alternates: {
-    canonical: "/privasi",
+    canonical: `${SITE_CONFIG.siteUrl}/privasi`,
   },
   openGraph: {
-    title: `Kebijakan Privasi - ${SITE_CONFIG.brandName}`,
-    description: `Kebijakan privasi resmi ${SITE_CONFIG.brandName} (${SITE_CONFIG.brandSubtitle}).`,
-    url: "/privasi",
+    title: `Kebijakan Privasi — ${SITE_CONFIG.brandName} Bel Sekolah Offline`,
+    description: `Kebijakan privasi resmi ${SITE_CONFIG.brandName}. Jaminan 100% offline tanpa telemetri untuk seluruh sekolah.`,
+    url: `${SITE_CONFIG.siteUrl}/privasi`,
+    images: [
+      {
+        url: "/images/screenshot_real_compact.png",
+        width: 1280,
+        height: 720,
+        alt: `Kebijakan Privasi ${SITE_CONFIG.brandName}`,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `Kebijakan Privasi — ${SITE_CONFIG.brandName}`,
+    description: `Prinsip privasi 100% offline-first aplikasi bel sekolah otomatis Windows KRONABEL.`,
+    images: ["/images/screenshot_real_compact.png"],
   },
 };
 

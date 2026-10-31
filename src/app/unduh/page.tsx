@@ -4,15 +4,29 @@ import { Download, CheckCircle2, FileArchive, Laptop, HelpCircle, ExternalLink }
 import { SITE_CONFIG } from "@/config/site";
 
 export const metadata: Metadata = {
-  title: `Unduh Aplikasi Resmi - ${SITE_CONFIG.brandName}`,
-  description: `Unduh ${SITE_CONFIG.brandName} (${SITE_CONFIG.brandSubtitle}) versi ${SITE_CONFIG.release.latestVersion} untuk Windows 10 & Windows 11 64-bit. Tersedia paket Installer Setup dan Portable ZIP.`,
+  title: `Download Aplikasi Bel Sekolah Otomatis Windows - ${SITE_CONFIG.brandName}`,
+  description: `Download aplikasi bel sekolah otomatis gratis ${SITE_CONFIG.brandName} v${SITE_CONFIG.release.latestVersion} untuk Windows 10 & 11 (64-bit). Tersedia paket Installer Setup dan Portable ZIP siap pakai 100% offline tanpa biaya langganan.`,
   alternates: {
-    canonical: "/unduh",
+    canonical: `${SITE_CONFIG.siteUrl}/unduh`,
   },
   openGraph: {
-    title: `Unduh Aplikasi Resmi - ${SITE_CONFIG.brandName}`,
-    description: `Unduh ${SITE_CONFIG.brandName} (${SITE_CONFIG.brandSubtitle}) versi ${SITE_CONFIG.release.latestVersion} untuk Windows 10 & Windows 11 64-bit.`,
-    url: "/unduh",
+    title: `Download Aplikasi Bel Sekolah Otomatis Windows - ${SITE_CONFIG.brandName}`,
+    description: `Download ${SITE_CONFIG.brandName} v${SITE_CONFIG.release.latestVersion} gratis untuk Windows 10 & 11 (64-bit). Tersedia Installer dan Portable ZIP offline.`,
+    url: `${SITE_CONFIG.siteUrl}/unduh`,
+    images: [
+      {
+        url: "/images/screenshot_real_compact.png",
+        width: 1280,
+        height: 720,
+        alt: `Download ${SITE_CONFIG.brandName} Aplikasi Bel Sekolah Otomatis`,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `Download Aplikasi Bel Sekolah Otomatis - ${SITE_CONFIG.brandName}`,
+    description: `Download software bel sekolah gratis untuk Windows 10 & 11 (64-bit). 100% offline dan tanpa lisensi berbayar.`,
+    images: ["/images/screenshot_real_compact.png"],
   },
 };
 

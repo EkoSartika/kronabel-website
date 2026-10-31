@@ -25,15 +25,29 @@ import {
 } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: `${SITE_CONFIG.brandName} — ${SITE_CONFIG.tagline}`,
-  description: `${SITE_CONFIG.brandSubtitle}. ${SITE_CONFIG.description}`,
+  title: `${SITE_CONFIG.brandName} — Aplikasi Bel Sekolah Otomatis Windows (Gratis & Offline)`,
+  description: `Download ${SITE_CONFIG.brandName}, software bel sekolah otomatis gratis untuk PC Windows 10 & 11 (64-bit). Bekerja 100% offline, presisi tinggi, mendukung audio MP3 & WAV, multi-profil jadwal, dan tanpa biaya langganan.`,
   alternates: {
-    canonical: "/",
+    canonical: `${SITE_CONFIG.siteUrl}/`,
   },
   openGraph: {
-    title: `${SITE_CONFIG.brandName} — ${SITE_CONFIG.tagline}`,
-    description: `${SITE_CONFIG.brandSubtitle}. ${SITE_CONFIG.description}`,
-    url: "/",
+    title: `${SITE_CONFIG.brandName} — Aplikasi Bel Sekolah Otomatis Windows`,
+    description: `Download ${SITE_CONFIG.brandName}, software bel sekolah otomatis gratis untuk Windows 10 & 11. Bekerja 100% offline dengan audio MP3/WAV dan multi-profil.`,
+    url: `${SITE_CONFIG.siteUrl}/`,
+    images: [
+      {
+        url: "/images/screenshot_real_compact.png",
+        width: 1280,
+        height: 720,
+        alt: "Antarmuka Aplikasi Bel Sekolah Otomatis KRONABEL",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${SITE_CONFIG.brandName} — Aplikasi Bel Sekolah Otomatis Windows`,
+    description: `Software bel sekolah otomatis gratis untuk Windows 10 & 11 (64-bit). 100% offline, praktis, dan tanpa biaya langganan.`,
+    images: ["/images/screenshot_real_compact.png"],
   },
 };
 
@@ -105,7 +119,10 @@ export default async function HomePage() {
                 <h1 className="text-4xl font-black tracking-tight text-forest-950 sm:text-5xl lg:text-6xl">
                   {heroContent.heading || SITE_CONFIG.brandName}
                 </h1>
-                <p className="text-2xl font-bold tracking-tight text-forest-800 sm:text-3xl">
+                <p className="text-xl sm:text-2xl font-bold tracking-tight text-emerald-800">
+                  Aplikasi Bel Sekolah Otomatis Windows
+                </p>
+                <p className="text-lg font-medium text-slate-500 italic">
                   &ldquo;{(heroContent.tagline || SITE_CONFIG.tagline).replace(/^[“"']+|[”"']+$/g, "")}&rdquo;
                 </p>
               </div>

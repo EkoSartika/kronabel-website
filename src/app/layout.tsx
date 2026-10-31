@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { JsonLd } from "@/components/JsonLd";
 import { SITE_CONFIG } from "@/config/site";
 
 const inter = Inter({
@@ -14,28 +15,70 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_CONFIG.siteUrl),
   title: {
-    default: `${SITE_CONFIG.brandName} — ${SITE_CONFIG.tagline}`,
+    default: `${SITE_CONFIG.brandName} — ${SITE_CONFIG.brandSubtitle} Windows (Gratis & Offline)`,
     template: `%s | ${SITE_CONFIG.brandName}`,
   },
-  description: `${SITE_CONFIG.brandSubtitle}. ${SITE_CONFIG.description}`,
+  description: `${SITE_CONFIG.brandSubtitle} untuk PC Windows 10 & 11 (64-bit). ${SITE_CONFIG.description}`,
   keywords: [
-    "Bel Sekolah Otomatis",
+    "aplikasi bel sekolah otomatis",
+    "software bel sekolah otomatis",
+    "aplikasi bel sekolah gratis",
+    "bel sekolah otomatis Windows",
+    "aplikasi bel sekolah offline",
+    "download aplikasi bel sekolah",
+    "bel sekolah otomatis",
+    "jadwal bel sekolah",
+    "bel sekolah MP3 WAV",
     "KRONABEL",
-    "Bel Otomatis Windows",
-    "Jadwal Bel Sekolah",
-    "Software Bel Sekolah Gratis",
-    "Bel Sekolah Ramadan Ujian",
-    "Aplikasi Sekolah Indonesia",
   ],
   authors: [{ name: SITE_CONFIG.author }],
+  creator: SITE_CONFIG.author,
+  publisher: SITE_CONFIG.brandName,
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  alternates: {
+    canonical: SITE_CONFIG.siteUrl,
+  },
   icons: {
     icon: "/images/app_icon.png",
     shortcut: "/images/app_icon.ico",
+    apple: "/images/app_icon.png",
   },
   openGraph: {
     type: "website",
     locale: "id_ID",
+    url: SITE_CONFIG.siteUrl,
     siteName: SITE_CONFIG.brandName,
+    title: `${SITE_CONFIG.brandName} — ${SITE_CONFIG.brandSubtitle} Windows`,
+    description: `Download ${SITE_CONFIG.brandName}, software bel sekolah otomatis gratis untuk Windows 10 & 11 (64-bit). 100% offline, presisi, mendukung MP3/WAV, dan tanpa biaya langganan.`,
+    images: [
+      {
+        url: "/images/screenshot_real_compact.png",
+        width: 1280,
+        height: 720,
+        alt: "Antarmuka Aplikasi Bel Sekolah Otomatis KRONABEL Windows",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${SITE_CONFIG.brandName} — ${SITE_CONFIG.brandSubtitle} Windows`,
+    description: `Software bel sekolah otomatis gratis untuk Windows 10 & 11 (64-bit). Bekerja 100% offline, praktis, dan tanpa biaya langganan.`,
+    images: ["/images/screenshot_real_compact.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
 };
 
@@ -46,6 +89,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="id" className={`scroll-smooth ${inter.variable}`}>
+      <head>
+        <JsonLd />
+      </head>
       <body className="min-h-screen bg-ivory-50 text-slate-800 antialiased flex flex-col justify-between selection:bg-gold-200 selection:text-gold-900">
         <Navbar />
         <main className="flex-grow">{children}</main>

@@ -5,15 +5,29 @@ import { SITE_CONFIG } from "@/config/site";
 import { getPageContent } from "@/lib/supabase/content";
 
 export const metadata: Metadata = {
-  title: `Tentang Kami - ${SITE_CONFIG.brandName}`,
-  description: `Mengenal ${SITE_CONFIG.brandName} (${SITE_CONFIG.brandSubtitle}), latar belakang pengembangan, filosofi gratis mandiri, dan transparansi merek.`,
+  title: `Tentang ${SITE_CONFIG.brandName} — Software Bel Sekolah Otomatis Gratis`,
+  description: `Mengenal ${SITE_CONFIG.brandName}, inisiatif software bel sekolah otomatis Windows gratis dan mandiri untuk mendukung ketertiban waktu belajar seluruh sekolah di Indonesia secara 100% offline.`,
   alternates: {
-    canonical: "/tentang",
+    canonical: `${SITE_CONFIG.siteUrl}/tentang`,
   },
   openGraph: {
-    title: `Tentang Kami - ${SITE_CONFIG.brandName}`,
-    description: `Mengenal ${SITE_CONFIG.brandName} (${SITE_CONFIG.brandSubtitle}), latar belakang pengembangan, filosofi gratis mandiri, dan transparansi merek.`,
-    url: "/tentang",
+    title: `Tentang ${SITE_CONFIG.brandName} — Software Bel Sekolah Otomatis Gratis`,
+    description: `Mengenal ${SITE_CONFIG.brandName}, perangkat lunak bel sekolah otomatis Windows gratis dan mandiri untuk sekolah di Indonesia.`,
+    url: `${SITE_CONFIG.siteUrl}/tentang`,
+    images: [
+      {
+        url: "/images/screenshot_real_compact.png",
+        width: 1280,
+        height: 720,
+        alt: `Tentang ${SITE_CONFIG.brandName}`,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `Tentang ${SITE_CONFIG.brandName} — Software Bel Sekolah Otomatis`,
+    description: `Inisiatif perangkat lunak bel sekolah otomatis Windows gratis dan mandiri untuk pendidikan Indonesia.`,
+    images: ["/images/screenshot_real_compact.png"],
   },
 };
 

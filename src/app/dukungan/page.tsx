@@ -5,15 +5,29 @@ import { SITE_CONFIG } from "@/config/site";
 import { getPageContent } from "@/lib/supabase/content";
 
 export const metadata: Metadata = {
-  title: `Dukungan Pengembang - ${SITE_CONFIG.brandName}`,
-  description: `Dukung pengembangan mandiri ${SITE_CONFIG.brandName} (${SITE_CONFIG.brandSubtitle}). Aplikasi bel sekolah 100% gratis tanpa biaya lisensi maupun langganan.`,
+  title: `Dukungan Pengembang Aplikasi Bel Sekolah - ${SITE_CONFIG.brandName}`,
+  description: `Dukung pengembangan mandiri ${SITE_CONFIG.brandName} secara sukarela via Saweria. Aplikasi bel sekolah otomatis ini tetap 100% gratis tanpa biaya lisensi maupun langganan.`,
   alternates: {
-    canonical: "/dukungan",
+    canonical: `${SITE_CONFIG.siteUrl}/dukungan`,
   },
   openGraph: {
-    title: `Dukungan Pengembang - ${SITE_CONFIG.brandName}`,
-    description: `Dukung pengembangan mandiri ${SITE_CONFIG.brandName} (${SITE_CONFIG.brandSubtitle}).`,
-    url: "/dukungan",
+    title: `Dukungan Pengembang Aplikasi Bel Sekolah - ${SITE_CONFIG.brandName}`,
+    description: `Dukung pengembangan mandiri ${SITE_CONFIG.brandName}. Software bel sekolah otomatis 100% gratis untuk pendidikan.`,
+    url: `${SITE_CONFIG.siteUrl}/dukungan`,
+    images: [
+      {
+        url: "/images/screenshot_real_compact.png",
+        width: 1280,
+        height: 720,
+        alt: `Dukungan Pengembang ${SITE_CONFIG.brandName}`,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `Dukungan Pengembang Bel Sekolah - ${SITE_CONFIG.brandName}`,
+    description: `Dukungan sukarela untuk keberlanjutan pengembangan aplikasi bel sekolah otomatis gratis KRONABEL.`,
+    images: ["/images/screenshot_real_compact.png"],
   },
 };
 

@@ -4,15 +4,29 @@ import { History, Tag, CheckCircle2, ShieldCheck, Download, Sparkles, AlertCircl
 import { SITE_CONFIG } from "@/config/site";
 
 export const metadata: Metadata = {
-  title: `Riwayat Versi & Catatan Rilis - ${SITE_CONFIG.brandName}`,
-  description: `Catatan rilis lengkap dan riwayat pembaruan aplikasi ${SITE_CONFIG.brandName} (${SITE_CONFIG.brandSubtitle}) mulai dari v1.2.0 hingga rilis terbaru v1.2.2.`,
+  title: `Riwayat Versi & Pembaruan Aplikasi Bel Sekolah - ${SITE_CONFIG.brandName}`,
+  description: `Catatan rilis dan riwayat pembaruan resmi ${SITE_CONFIG.brandName} (${SITE_CONFIG.brandSubtitle}) versi v1.2.2. Peningkatan timer scheduler, audio controller, dan stabilitas bel sekolah otomatis Windows.`,
   alternates: {
-    canonical: "/riwayat-versi",
+    canonical: `${SITE_CONFIG.siteUrl}/riwayat-versi`,
   },
   openGraph: {
-    title: `Riwayat Versi & Catatan Rilis - ${SITE_CONFIG.brandName}`,
-    description: `Catatan rilis lengkap dan riwayat pembaruan aplikasi ${SITE_CONFIG.brandName} (${SITE_CONFIG.brandSubtitle}).`,
-    url: "/riwayat-versi",
+    title: `Riwayat Versi & Pembaruan Aplikasi Bel Sekolah - ${SITE_CONFIG.brandName}`,
+    description: `Catatan rilis resmi ${SITE_CONFIG.brandName} v${SITE_CONFIG.release.latestVersion}. Stabilitas scheduler dan audio bel sekolah otomatis.`,
+    url: `${SITE_CONFIG.siteUrl}/riwayat-versi`,
+    images: [
+      {
+        url: "/images/screenshot_real_compact.png",
+        width: 1280,
+        height: 720,
+        alt: `Catatan Rilis ${SITE_CONFIG.brandName}`,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `Riwayat Versi Bel Sekolah Otomatis - ${SITE_CONFIG.brandName}`,
+    description: `Catatan pembaruan dan peningkatan fitur bel sekolah otomatis Windows KRONABEL.`,
+    images: ["/images/screenshot_real_compact.png"],
   },
 };
 

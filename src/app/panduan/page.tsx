@@ -8,15 +8,29 @@ import {
 import { SITE_CONFIG } from "@/config/site";
 
 export const metadata: Metadata = {
-  title: `Panduan Penggunaan Lengkap - ${SITE_CONFIG.brandName}`,
-  description: `Dokumentasi dan petunjuk praktis penggunaan aplikasi ${SITE_CONFIG.brandName} (${SITE_CONFIG.brandSubtitle}). Panduan instalasi, konfigurasi jadwal, multi-profil, pustaka audio, dan pemecahan masalah.`,
+  title: `Panduan Penggunaan Software Bel Sekolah Otomatis - ${SITE_CONFIG.brandName}`,
+  description: `Dokumentasi dan petunjuk lengkap penggunaan aplikasi bel sekolah otomatis Windows ${SITE_CONFIG.brandName}. Panduan instalasi, jadwal harian/Ramadan/ujian, pustaka audio MP3/WAV, dan solusi masalah.`,
   alternates: {
-    canonical: "/panduan",
+    canonical: `${SITE_CONFIG.siteUrl}/panduan`,
   },
   openGraph: {
-    title: `Panduan Penggunaan Lengkap - ${SITE_CONFIG.brandName}`,
-    description: `Dokumentasi dan petunjuk praktis penggunaan aplikasi ${SITE_CONFIG.brandName} (${SITE_CONFIG.brandSubtitle}).`,
-    url: "/panduan",
+    title: `Panduan Penggunaan Software Bel Sekolah Otomatis - ${SITE_CONFIG.brandName}`,
+    description: `Dokumentasi lengkap penggunaan aplikasi bel sekolah otomatis ${SITE_CONFIG.brandName}. Panduan instalasi, multi-profil jadwal, dan audio bel sekolah.`,
+    url: `${SITE_CONFIG.siteUrl}/panduan`,
+    images: [
+      {
+        url: "/images/screenshot_real_compact.png",
+        width: 1280,
+        height: 720,
+        alt: `Panduan Penggunaan ${SITE_CONFIG.brandName}`,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `Panduan Penggunaan Software Bel Sekolah Otomatis - ${SITE_CONFIG.brandName}`,
+    description: `Dokumentasi panduan instalasi dan operasional bel sekolah otomatis Windows KRONABEL.`,
+    images: ["/images/screenshot_real_compact.png"],
   },
 };
 
