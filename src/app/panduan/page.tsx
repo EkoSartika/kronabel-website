@@ -1,20 +1,8 @@
 import Link from "next/link";
 import {
-  BookOpen,
-  Laptop,
-  Clock,
-  Layers,
-  Music,
-  BellRing,
-  VolumeX,
-  Database,
-  HelpCircle,
   AlertCircle,
   CheckCircle2,
-  Sliders,
   ChevronRight,
-  ShieldCheck,
-  Terminal,
 } from "lucide-react";
 import { SITE_CONFIG } from "@/config/site";
 
@@ -25,14 +13,14 @@ export const metadata = {
 
 export default function GuidePage() {
   const sections = [
-    { id: "instalasi", title: "1. Instalasi & Setup Pertama", icon: Laptop },
-    { id: "jadwal", title: "2. Pengaturan Jam & Jadwal Bel", icon: Clock },
-    { id: "profil", title: "3. Penggunaan Multi-Profil", icon: Layers },
-    { id: "audio", title: "4. Pustaka Audio Berkode", icon: Music },
-    { id: "manual", title: "5. Bel Manual & Sistem Interupsi", icon: BellRing },
-    { id: "kontrol", title: "6. Tombol Stop & Scheduler ON/OFF", icon: VolumeX },
-    { id: "backup", title: "7. Backup & Restore Database", icon: Database },
-    { id: "troubleshoot", title: "8. Solusi Masalah (Troubleshooting)", icon: HelpCircle },
+    { id: "instalasi", title: "1. Instalasi & Setup Pertama" },
+    { id: "jadwal", title: "2. Pengaturan Jam & Jadwal Bel" },
+    { id: "profil", title: "3. Penggunaan Multi-Profil" },
+    { id: "audio", title: "4. Pustaka Audio Berkode" },
+    { id: "manual", title: "5. Bel Manual & Sistem Interupsi" },
+    { id: "kontrol", title: "6. Tombol Stop & Scheduler ON/OFF" },
+    { id: "backup", title: "7. Backup & Restore Database" },
+    { id: "troubleshoot", title: "8. Solusi Masalah (Troubleshooting)" },
   ];
 
   return (
@@ -40,10 +28,6 @@ export default function GuidePage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-14">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-100 text-emerald-900 text-xs font-semibold uppercase tracking-wider mb-4 border border-emerald-200">
-            <BookOpen className="w-4 h-4 text-emerald-700" />
-            Dokumentasi & Tutorial
-          </div>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight">
             Panduan Penggunaan {SITE_CONFIG.brandName}
           </h1>
@@ -62,18 +46,14 @@ export default function GuidePage() {
               </h3>
               <nav className="space-y-1">
                 {sections.map((s) => {
-                  const Icon = s.icon;
                   return (
                     <a
                       key={s.id}
                       href={`#${s.id}`}
-                      className="group flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium text-slate-700 hover:text-emerald-900 hover:bg-emerald-50 transition-colors"
+                      className="group flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-700 hover:text-emerald-900 hover:bg-emerald-50 transition-colors"
                     >
-                      <div className="flex items-center gap-2.5">
-                        <Icon className="w-4 h-4 text-slate-400 group-hover:text-emerald-700 transition-colors" />
-                        <span>{s.title}</span>
-                      </div>
-                      <ChevronRight className="w-3.5 h-3.5 text-slate-300 group-hover:text-emerald-700 transition-colors" />
+                      <span className="truncate">{s.title}</span>
+                      <ChevronRight className="w-3.5 h-3.5 text-slate-300 group-hover:text-emerald-700 transition-colors shrink-0 ml-2" />
                     </a>
                   );
                 })}
@@ -98,14 +78,9 @@ export default function GuidePage() {
           <div className="lg:col-span-8 space-y-12">
             {/* Bagian 1: Instalasi */}
             <section id="instalasi" className="bg-white rounded-3xl p-7 sm:p-9 shadow-sm border border-slate-200 scroll-mt-24">
-              <div className="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
-                <div className="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-800">
-                  <Laptop className="w-5 h-5" />
-                </div>
-                <div>
-                  <h2 className="text-xl sm:text-2xl font-bold text-slate-900">1. Instalasi & Setup Pertama</h2>
-                  <p className="text-xs text-slate-500">Pemasangan di Windows 10 atau Windows 11 (64-bit)</p>
-                </div>
+              <div className="mb-6 pb-4 border-b border-slate-100">
+                <h2 className="text-xl sm:text-2xl font-bold text-slate-900">1. Instalasi & Setup Pertama</h2>
+                <p className="text-xs text-slate-500 mt-1">Pemasangan di Windows 10 atau Windows 11 (64-bit)</p>
               </div>
 
               <div className="space-y-6 text-sm text-slate-700 leading-relaxed">
@@ -142,14 +117,9 @@ export default function GuidePage() {
 
             {/* Bagian 2: Pengaturan Jam & Jadwal */}
             <section id="jadwal" className="bg-white rounded-3xl p-7 sm:p-9 shadow-sm border border-slate-200 scroll-mt-24">
-              <div className="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
-                <div className="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-800">
-                  <Clock className="w-5 h-5" />
-                </div>
-                <div>
-                  <h2 className="text-xl sm:text-2xl font-bold text-slate-900">2. Pengaturan Jam & Jadwal Bel</h2>
-                  <p className="text-xs text-slate-500">Menyusun jadwal harian masuk, pergantian jam, dan pulang</p>
-                </div>
+              <div className="mb-6 pb-4 border-b border-slate-100">
+                <h2 className="text-xl sm:text-2xl font-bold text-slate-900">2. Pengaturan Jam & Jadwal Bel</h2>
+                <p className="text-xs text-slate-500 mt-1">Menyusun jadwal harian masuk, pergantian jam, dan pulang</p>
               </div>
 
               <div className="space-y-4 text-sm text-slate-700 leading-relaxed">
@@ -176,14 +146,9 @@ export default function GuidePage() {
 
             {/* Bagian 3: Multi Profil */}
             <section id="profil" className="bg-white rounded-3xl p-7 sm:p-9 shadow-sm border border-slate-200 scroll-mt-24">
-              <div className="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
-                <div className="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-800">
-                  <Layers className="w-5 h-5" />
-                </div>
-                <div>
-                  <h2 className="text-xl sm:text-2xl font-bold text-slate-900">3. Penggunaan Multi-Profil</h2>
-                  <p className="text-xs text-slate-500">Beralih jadwal dengan 1 klik tanpa harus menghapus jadwal reguler</p>
-                </div>
+              <div className="mb-6 pb-4 border-b border-slate-100">
+                <h2 className="text-xl sm:text-2xl font-bold text-slate-900">3. Penggunaan Multi-Profil</h2>
+                <p className="text-xs text-slate-500 mt-1">Beralih jadwal dengan 1 klik tanpa harus menghapus jadwal reguler</p>
               </div>
 
               <div className="space-y-4 text-sm text-slate-700 leading-relaxed">
@@ -218,14 +183,9 @@ export default function GuidePage() {
 
             {/* Bagian 4: Pustaka Audio Berkode */}
             <section id="audio" className="bg-white rounded-3xl p-7 sm:p-9 shadow-sm border border-slate-200 scroll-mt-24">
-              <div className="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
-                <div className="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-800">
-                  <Music className="w-5 h-5" />
-                </div>
-                <div>
-                  <h2 className="text-xl sm:text-2xl font-bold text-slate-900">4. Pustaka Audio Berkode & Uji Suara</h2>
-                  <p className="text-xs text-slate-500">Mengenal kode nada bel dan memasukkan rekaman audio kustom</p>
-                </div>
+              <div className="mb-6 pb-4 border-b border-slate-100">
+                <h2 className="text-xl sm:text-2xl font-bold text-slate-900">4. Pustaka Audio Berkode & Uji Suara</h2>
+                <p className="text-xs text-slate-500 mt-1">Mengenal kode nada bel dan memasukkan rekaman audio kustom</p>
               </div>
 
               <div className="space-y-4 text-sm text-slate-700 leading-relaxed">
@@ -268,14 +228,9 @@ export default function GuidePage() {
 
             {/* Bagian 5: Bel Manual & Sistem Interupsi */}
             <section id="manual" className="bg-white rounded-3xl p-7 sm:p-9 shadow-sm border border-slate-200 scroll-mt-24">
-              <div className="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
-                <div className="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-800">
-                  <BellRing className="w-5 h-5" />
-                </div>
-                <div>
-                  <h2 className="text-xl sm:text-2xl font-bold text-slate-900">5. Bel Manual & Sistem Interupsi Suara</h2>
-                  <p className="text-xs text-slate-500">Mekanisme pemutaran audio real-time dan proteksi jadwal terlewat</p>
-                </div>
+              <div className="mb-6 pb-4 border-b border-slate-100">
+                <h2 className="text-xl sm:text-2xl font-bold text-slate-900">5. Bel Manual & Sistem Interupsi Suara</h2>
+                <p className="text-xs text-slate-500 mt-1">Mekanisme pemutaran audio real-time dan proteksi jadwal terlewat</p>
               </div>
 
               <div className="space-y-4 text-sm text-slate-700 leading-relaxed">
@@ -305,14 +260,9 @@ export default function GuidePage() {
 
             {/* Bagian 6: Kontrol Stop & Scheduler ON/OFF */}
             <section id="kontrol" className="bg-white rounded-3xl p-7 sm:p-9 shadow-sm border border-slate-200 scroll-mt-24">
-              <div className="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
-                <div className="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-800">
-                  <VolumeX className="w-5 h-5" />
-                </div>
-                <div>
-                  <h2 className="text-xl sm:text-2xl font-bold text-slate-900">6. Tombol Stop & Kontrol Scheduler ON/OFF</h2>
-                  <p className="text-xs text-slate-500">Kontrol penuh atas audio dan penjadwal bel otomatis</p>
-                </div>
+              <div className="mb-6 pb-4 border-b border-slate-100">
+                <h2 className="text-xl sm:text-2xl font-bold text-slate-900">6. Tombol Stop & Kontrol Scheduler ON/OFF</h2>
+                <p className="text-xs text-slate-500 mt-1">Kontrol penuh atas audio dan penjadwal bel otomatis</p>
               </div>
 
               <div className="space-y-4 text-sm text-slate-700 leading-relaxed">
@@ -336,14 +286,9 @@ export default function GuidePage() {
 
             {/* Bagian 7: Backup & Restore */}
             <section id="backup" className="bg-white rounded-3xl p-7 sm:p-9 shadow-sm border border-slate-200 scroll-mt-24">
-              <div className="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
-                <div className="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-800">
-                  <Database className="w-5 h-5" />
-                </div>
-                <div>
-                  <h2 className="text-xl sm:text-2xl font-bold text-slate-900">7. Backup & Restore Database</h2>
-                  <p className="text-xs text-slate-500">Mengamankan konfigurasi jadwal sekolah dan memindahkan ke komputer baru</p>
-                </div>
+              <div className="mb-6 pb-4 border-b border-slate-100">
+                <h2 className="text-xl sm:text-2xl font-bold text-slate-900">7. Backup & Restore Database</h2>
+                <p className="text-xs text-slate-500 mt-1">Mengamankan konfigurasi jadwal sekolah dan memindahkan ke komputer baru</p>
               </div>
 
               <div className="space-y-4 text-sm text-slate-700 leading-relaxed">
@@ -371,14 +316,9 @@ export default function GuidePage() {
 
             {/* Bagian 8: Troubleshooting */}
             <section id="troubleshoot" className="bg-white rounded-3xl p-7 sm:p-9 shadow-sm border border-slate-200 scroll-mt-24">
-              <div className="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
-                <div className="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-800">
-                  <HelpCircle className="w-5 h-5" />
-                </div>
-                <div>
-                  <h2 className="text-xl sm:text-2xl font-bold text-slate-900">8. Solusi Masalah (Troubleshooting)</h2>
-                  <p className="text-xs text-slate-500">Penyelesaian cepat kendala teknis yang umum dihadapi di sekolah</p>
-                </div>
+              <div className="mb-6 pb-4 border-b border-slate-100">
+                <h2 className="text-xl sm:text-2xl font-bold text-slate-900">8. Solusi Masalah (Troubleshooting)</h2>
+                <p className="text-xs text-slate-500 mt-1">Penyelesaian cepat kendala teknis yang umum dihadapi di sekolah</p>
               </div>
 
               <div className="space-y-4 text-sm text-slate-700 leading-relaxed">

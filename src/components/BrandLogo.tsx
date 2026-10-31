@@ -53,16 +53,9 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
       </div>
 
       <div className="flex flex-col">
-        <div className="flex items-center gap-2">
-          <span className={`font-black tracking-wider text-forest-950 ${textSizes[size]}`}>
-            {SITE_CONFIG.brandName}
-          </span>
-          {showBadge && (
-            <span className="rounded-full border border-gold-600/30 bg-gold-100 px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wide text-gold-900">
-              v{SITE_CONFIG.release.latestVersion}
-            </span>
-          )}
-        </div>
+        <span className={`font-black tracking-wider text-forest-950 ${textSizes[size]}`}>
+          {SITE_CONFIG.brandName}
+        </span>
         <span className="hidden text-[10px] font-medium tracking-normal text-slate-500 sm:inline-block">
           {SITE_CONFIG.brandSubtitle}
         </span>

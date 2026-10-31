@@ -72,14 +72,6 @@ export default function HomePage() {
           <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-8">
             {/* Left Content */}
             <div className="space-y-6 text-center lg:col-span-7 lg:text-left">
-              {/* Release Badge */}
-              <div className="inline-flex items-center gap-2 rounded-full border border-gold-600/30 bg-gold-100/90 px-3.5 py-1.5 text-xs font-bold text-gold-900 shadow-sm">
-                <span className="flex h-2 w-2 rounded-full bg-forest-600 animate-pulse" />
-                <span>Rilis Resmi Terkini v{SITE_CONFIG.release.latestVersion}</span>
-                <span className="text-gold-700">|</span>
-                <span className="font-medium text-slate-600">Windows 10/11 64-bit</span>
-              </div>
-
               {/* Title & Tagline */}
               <div className="space-y-2">
                 <h1 className="text-4xl font-black tracking-tight text-forest-950 sm:text-5xl lg:text-6xl">

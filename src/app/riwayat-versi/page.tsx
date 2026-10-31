@@ -131,7 +131,7 @@ export default function ChangelogPage() {
               {/* Header Card */}
               <div className="flex flex-wrap items-center justify-between gap-4 mb-5 pb-5 border-b border-slate-100">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-2xl bg-emerald-800 text-amber-300 flex items-center justify-center font-bold font-mono text-sm shadow-inner">
+                  <div className="h-10 min-w-[4.75rem] px-3.5 rounded-2xl bg-emerald-800 text-amber-300 flex items-center justify-center font-bold font-mono text-sm tracking-wide whitespace-nowrap shadow-inner shrink-0">
                     v{ver.version}
                   </div>
                   <div>
