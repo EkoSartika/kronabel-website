@@ -10,7 +10,7 @@ interface FeedbackItem {
   category: "saran" | "kritik" | "bug" | "fitur" | "lainnya";
   message: string;
   status: "baru" | "dibaca" | "diproses" | "selesai";
-  ip_address: string | null;
+  ip_hash: string | null;
   user_agent: string | null;
   created_at: string;
   updated_at: string;
@@ -431,7 +431,7 @@ export default function AdminFeedbackPage() {
                 </div>
                 <div>
                   <span className="text-slate-400 block text-[11px]">Alamat IP:</span>
-                  <span className="font-mono text-slate-700">{selectedItem.ip_address || "Tidak tercatat"}</span>
+                  <span className="font-mono text-slate-700">{selectedItem.ip_hash ? `••••${selectedItem.ip_hash.slice(-8)}` : "Tidak tercatat"}</span>
                 </div>
               </div>
 
