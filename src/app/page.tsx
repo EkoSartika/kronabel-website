@@ -60,7 +60,7 @@ export default function HomePage() {
       a: "Cukup hubungkan lubang output audio (jack 3.5mm atau USB soundcard) komputer ke input audio amplifier / sound system lorong sekolah. Pastikan volume Windows dan amplifier berada pada tingkat yang diinginkan.",
     },
     {
-      q: "Bagaimana cara memberikan dukungan sukarela kepada pengembang?",
+      q: "Bagaimana cara memberikan dukungan kepada pengembang?",
       a: "Dukungan dapat disalurkan secara sukarela melalui platform Saweria. Setiap dukungan sangat berharga untuk pemeliharaan website, pembaruan fitur, dan keberlanjutan pengembangan aplikasi.",
     },
   ];

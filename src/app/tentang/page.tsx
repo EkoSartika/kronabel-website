@@ -81,7 +81,7 @@ export default function AboutPage() {
             <div className="w-9 h-9 rounded-lg bg-amber-50 text-amber-700 flex items-center justify-center">
               <Heart className="w-5 h-5" />
             </div>
-            <h3 className="font-bold text-slate-900 text-base">Dukungan Sukarela</h3>
+            <h3 className="font-bold text-slate-900 text-base">Dukungan Pengembang</h3>
             <p className="text-xs text-slate-600 leading-relaxed">
               Keberlanjutan proyek didukung melalui donasi sukarela komunitas pendidikan yang merasa terbantu oleh aplikasi ini.
             </p>

@@ -15,14 +15,13 @@ export const SITE_CONFIG = {
   brandDisclaimer:
     "KRONABEL merupakan kandidat nama merek sementara untuk aplikasi Bel Sekolah Otomatis yang sedang dalam tahap verifikasi ketersediaan. Tidak ada klaim hak cipta terdaftar sebelum pemeriksaan selesai.",
 
-  // Dukungan Sukarela (Saweria)
-  // CATATAN AUDIT: URL tetap kosong ("") sampai pengguna memberikan tautan resmi.
+  // Dukungan Pengembang (Saweria)
   donation: {
     platform: "Saweria",
-    url: "", // Dikosongkan: status belum dikonfigurasi
-    status: "unconfigured" as const,
+    url: "https://saweria.co/sartikamuhammadeko",
+    status: "active" as const,
     description:
-      "KRONABEL 100% gratis digunakan untuk seluruh sekolah di Indonesia tanpa biaya lisensi maupun langganan. Jika Anda merasa aplikasi ini bermanfaat, Anda dapat memberikan dukungan sukarela untuk keberlanjutan pengembangan.",
+      "KRONABEL 100% gratis digunakan untuk seluruh sekolah di Indonesia tanpa biaya lisensi maupun langganan. Jika Anda merasa aplikasi ini bermanfaat, Anda dapat memberikan dukungan untuk keberlanjutan pengembangan.",
   },
 
   // Konfigurasi Rilis Resmi (Distribusi via GitHub Releases)

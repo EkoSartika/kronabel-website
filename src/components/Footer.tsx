@@ -51,19 +51,21 @@ export const Footer: React.FC = () => {
           {/* Kolom 3: Dukungan & Model Distribusi */}
           <div>
             <h4 className="text-xs font-black uppercase tracking-wider text-forest-950">
-              Dukungan Sukarela
+              Dukungan Pengembang
             </h4>
             <p className="mt-4 text-xs leading-relaxed text-slate-600">
               Aplikasi ini dikembangkan untuk memajukan ketertiban operasional sekolah di Indonesia tanpa sistem langganan.
             </p>
             <div className="mt-4">
-              <Link
-                href="/dukungan"
-                className="inline-flex items-center gap-2 rounded-lg border border-gold-600/30 bg-gold-100/80 px-3.5 py-2 text-xs font-bold text-gold-900 hover:bg-gold-200 transition-all"
+              <a
+                href={SITE_CONFIG.donation.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-lg border border-gold-600/30 bg-gold-100/80 px-3.5 py-2 text-xs font-bold text-gold-900 hover:bg-gold-200 transition-all shadow-sm"
               >
                 <Heart className="h-3.5 w-3.5 fill-gold-600 text-gold-600" />
                 <span>Dukung Pengembang</span>
-              </Link>
+              </a>
             </div>
           </div>
         </div>

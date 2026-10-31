@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Heart, Coffee, ShieldCheck, CheckCircle2, Sparkles, HelpCircle, ArrowUpRight, QrCode, Clock } from "lucide-react";
+import { Heart, Coffee, CheckCircle2, ArrowUpRight } from "lucide-react";
 import { SITE_CONFIG } from "@/config/site";
 
 export const metadata: Metadata = {
-  title: `Dukungan Sukarela - ${SITE_CONFIG.brandName}`,
+  title: `Dukungan Pengembang - ${SITE_CONFIG.brandName}`,
   description: `Dukung pengembangan mandiri ${SITE_CONFIG.brandName} (${SITE_CONFIG.brandSubtitle}). Aplikasi bel sekolah 100% gratis tanpa biaya lisensi maupun langganan.`,
   alternates: {
     canonical: "/dukungan",
   },
   openGraph: {
-    title: `Dukungan Sukarela - ${SITE_CONFIG.brandName}`,
+    title: `Dukungan Pengembang - ${SITE_CONFIG.brandName}`,
     description: `Dukung pengembangan mandiri ${SITE_CONFIG.brandName} (${SITE_CONFIG.brandSubtitle}).`,
     url: "/dukungan",
   },
@@ -18,7 +18,6 @@ export const metadata: Metadata = {
 
 export default function DonationPage() {
   const { donation } = SITE_CONFIG;
-  const isDonationReady = Boolean(donation.url && donation.url.trim() !== "");
 
   return (
     <div className="py-12 sm:py-16">
@@ -27,7 +26,7 @@ export default function DonationPage() {
         <div className="text-center max-w-2xl mx-auto mb-12">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-100 text-amber-950 text-xs font-semibold uppercase tracking-wider mb-4 border border-amber-200">
             <Heart className="w-4 h-4 text-amber-600 fill-amber-600" />
-            Dukungan Sukarela Komunitas
+            Dukungan Pengembang
           </div>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight">
             Dukung Pengembangan <span className="text-emerald-800">{SITE_CONFIG.brandName}</span>
@@ -54,34 +53,24 @@ export default function DonationPage() {
               Jika {SITE_CONFIG.brandName} terbukti membantu ketertiban waktu belajar di sekolah Anda, meringankan tugas bapak/ibu guru piket, dan menghemat anggaran sekolah, Anda dapat menyisihkan donasi sukarela melalui platform <strong>Saweria</strong>.
             </p>
 
-            {/* Saweria Action Button / Status */}
-            <div className="pt-2 max-w-md mx-auto">
-              {isDonationReady ? (
-                <>
-                  <a
-                    href={donation.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-2xl text-base font-bold text-slate-950 bg-amber-400 hover:bg-amber-300 shadow-lg shadow-amber-400/25 transition-all hover:scale-[1.02]"
-                  >
-                    <span>Dukung via Saweria (QRIS / E-Wallet)</span>
-                    <ArrowUpRight className="w-5 h-5 text-slate-950" />
-                  </a>
-                  <p className="text-xs text-slate-400 mt-2">
-                    Mendukung QRIS, GoPay, OVO, DANA, ShopeePay, LinkAja, dan Mobile Banking.
-                  </p>
-                </>
-              ) : (
-                <div className="space-y-2">
-                  <div className="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-2xl text-sm font-semibold text-slate-500 bg-slate-100 border border-slate-300 w-full">
-                    <Clock className="w-4 h-4 text-amber-600" />
-                    <span>Tautan Saweria Sedang Disiapkan</span>
-                  </div>
-                  <p className="text-xs text-slate-500 text-center leading-relaxed">
-                    Saluran dukungan sukarela Saweria saat ini berstatus <em>belum dikonfigurasi</em>. Halaman ini akan diperbarui segera setelah akun resmi diverifikasi oleh pengembang.
-                  </p>
-                </div>
-              )}
+            {/* Saweria Action Button */}
+            <div className="pt-2 max-w-md mx-auto space-y-3">
+              <a
+                href={donation.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-3 w-full sm:w-auto px-8 py-4 rounded-2xl text-base font-bold text-slate-950 bg-amber-400 hover:bg-amber-300 shadow-lg shadow-amber-400/25 transition-all hover:scale-[1.02]"
+              >
+                <Heart className="w-5 h-5 fill-slate-950 text-slate-950" />
+                <span>Dukung KRONABEL</span>
+                <ArrowUpRight className="w-5 h-5 text-slate-950" />
+              </a>
+              <p className="text-xs text-slate-600 font-medium leading-relaxed">
+                Dukungan ini bersifat sukarela untuk mendukung keberlanjutan pengembangan. Aplikasi KRONABEL tetap 100% gratis digunakan untuk seluruh sekolah di Indonesia.
+              </p>
+              <p className="text-[11px] text-slate-400">
+                Mendukung QRIS, GoPay, OVO, DANA, ShopeePay, LinkAja, dan transfer bank via Saweria.
+              </p>
             </div>
           </div>
 
@@ -107,7 +96,7 @@ export default function DonationPage() {
             Transparansi Alokasi Dukungan
           </h3>
           <p className="text-sm text-emerald-200/90 leading-relaxed mb-6">
-            Dukungan sukarela dari para sahabat sekolah digunakan langsung untuk menopang kebutuhan teknis pengembangan:
+            Dukungan dari para sahabat sekolah digunakan langsung untuk menopang kebutuhan teknis pengembangan:
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm">
             <div className="flex items-start gap-3 bg-emerald-900/50 p-4 rounded-2xl border border-emerald-800">
@@ -144,9 +133,9 @@ export default function DonationPage() {
           </div>
         </div>
 
-        {/* Pertanyaan Seputar Dukungan Sukarela */}
+        {/* Pertanyaan Seputar Dukungan Pengembang */}
         <div className="space-y-4">
-          <h3 className="text-xl font-bold text-slate-900 mb-4">Pertanyaan Umum Seputar Donasi</h3>
+          <h3 className="text-xl font-bold text-slate-900 mb-4">Pertanyaan Seputar Dukungan Pengembang</h3>
           
           <div className="bg-white p-6 rounded-2xl border border-slate-200">
             <h4 className="font-bold text-slate-900 text-sm mb-1">
@@ -162,7 +151,7 @@ export default function DonationPage() {
               Bagaimana jika sekolah kami memiliki anggaran BOS atau komite yang ingin dialokasikan?
             </h4>
             <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-              Anda dapat menggunakan saluran resmi Saweria setelah tersedia, atau menghubungi pengembang jika memerlukan administrasi kwitansi dukungan institusi.
+              Anda dapat menggunakan tombol tautan resmi Saweria kami di atas, atau menghubungi pengembang jika memerlukan administrasi kwitansi dukungan institusi.
             </p>
           </div>
         </div>
