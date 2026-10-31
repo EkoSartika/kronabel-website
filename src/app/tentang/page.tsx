@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Info, ShieldCheck, Heart, Laptop, Compass, CheckCircle2, AlertCircle, ArrowRight } from "lucide-react";
+import { ShieldCheck, Heart, Laptop, Compass, ArrowRight } from "lucide-react";
 import { SITE_CONFIG } from "@/config/site";
 
 export const metadata: Metadata = {
@@ -86,20 +86,6 @@ export default function AboutPage() {
               Keberlanjutan proyek didukung melalui donasi sukarela komunitas pendidikan yang merasa terbantu oleh aplikasi ini.
             </p>
           </div>
-        </div>
-
-        {/* Card 3: Status Identitas Merek */}
-        <div className="bg-amber-50/70 rounded-3xl p-7 sm:p-9 border border-amber-200/80 mb-8 space-y-3">
-          <div className="flex items-center gap-2.5 text-amber-900 font-bold text-base">
-            <AlertCircle className="w-5 h-5 text-amber-700 shrink-0" />
-            <span>Pemberitahuan Status Merek Dagang</span>
-          </div>
-          <p className="text-xs sm:text-sm text-amber-950/90 leading-relaxed">
-            Nama <strong>{SITE_CONFIG.brandName}</strong> saat ini merupakan <em>kandidat nama merek sementara</em> yang digunakan dalam tahap publikasi awal aplikasi Bel Sekolah Otomatis. Kami tidak mengklaim hak cipta terdaftar atau perlindungan merek komersial sebelum seluruh verifikasi ketersediaan dan ketentuan hukum selesai.
-          </p>
-          <p className="text-xs text-amber-900/80 leading-relaxed italic">
-            * Struktur kode dan konfigurasi website dirancang fleksibel sehingga identitas nama dapat diselaraskan apabila terjadi penyesuaian merek di masa mendatang.
-          </p>
         </div>
 
         {/* CTA Bawah */}

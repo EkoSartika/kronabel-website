@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Download, ShieldCheck, CheckCircle2, AlertTriangle, FileArchive, Laptop, HelpCircle, HardDrive, ExternalLink } from "lucide-react";
+import { Download, CheckCircle2, FileArchive, Laptop, HelpCircle, ExternalLink } from "lucide-react";
 import { SITE_CONFIG } from "@/config/site";
-import { CopyHashButton, PowerShellVerifyBox } from "@/components/DownloadHelper";
 
 export const metadata: Metadata = {
   title: `Unduh Aplikasi Resmi - ${SITE_CONFIG.brandName}`,
@@ -104,26 +103,6 @@ export default function DownloadPage() {
                   <span>Database jadwal & audio tersimpan rapi di direktori aplikasi</span>
                 </div>
               </div>
-
-              {/* Hash Info */}
-              <div className="bg-slate-50 rounded-xl p-3.5 border border-slate-200/80 mb-6">
-                <div className="flex items-center justify-between mb-1.5">
-                  <span className="text-xs font-semibold text-slate-600">Nama Berkas:</span>
-                  <span className="text-xs font-mono text-slate-800 font-medium truncate max-w-[200px]">
-                    {release.installer.filename}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between text-xs">
-                  <span className="font-semibold text-slate-600">SHA-256 (Laporan Rilis):</span>
-                  <CopyHashButton hash={release.installer.sha256} />
-                </div>
-                <p className="text-[11px] font-mono text-slate-500 break-all mt-1 bg-white p-1.5 rounded border border-slate-200 select-all">
-                  {release.installer.sha256}
-                </p>
-                <p className="mt-1.5 text-[10px] text-slate-500 italic">
-                  * Ukuran dan nilai hash bersumber dari Laporan Rilis Resmi v1.2.2 (terverifikasi 100% cocok dengan berkas rilis fisik).
-                </p>
-              </div>
             </div>
 
             <div>
@@ -198,26 +177,6 @@ export default function DownloadPage() {
                   <span>Database dan audio selalu terbawa bersama folder aplikasi</span>
                 </div>
               </div>
-
-              {/* Hash Info */}
-              <div className="bg-slate-50 rounded-xl p-3.5 border border-slate-200/80 mb-6">
-                <div className="flex items-center justify-between mb-1.5">
-                  <span className="text-xs font-semibold text-slate-600">Nama Berkas:</span>
-                  <span className="text-xs font-mono text-slate-800 font-medium truncate max-w-[200px]">
-                    {release.portable.filename}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between text-xs">
-                  <span className="font-semibold text-slate-600">SHA-256 (Laporan Rilis):</span>
-                  <CopyHashButton hash={release.portable.sha256} />
-                </div>
-                <p className="text-[11px] font-mono text-slate-500 break-all mt-1 bg-white p-1.5 rounded border border-slate-200 select-all">
-                  {release.portable.sha256}
-                </p>
-                <p className="mt-1.5 text-[10px] text-slate-500 italic">
-                  * Ukuran dan nilai hash bersumber dari Laporan Rilis Resmi v1.2.2 (terverifikasi 100% cocok dengan berkas rilis fisik).
-                </p>
-              </div>
             </div>
 
             <div>
@@ -252,56 +211,6 @@ export default function DownloadPage() {
                 </div>
               )}
             </div>
-          </div>
-        </div>
-
-        {/* Verifikasi SHA-256 & SmartScreen */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
-          {/* Card: Verifikasi Hash */}
-          <div className="bg-white rounded-3xl p-7 sm:p-8 shadow-sm border border-slate-200">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-800">
-                <ShieldCheck className="w-6 h-6" />
-              </div>
-              <div>
-                <h3 className="text-lg font-bold text-slate-900">Verifikasi Integritas SHA-256</h3>
-                <p className="text-xs text-slate-500">Memastikan berkas yang diunduh 100% otentik dan bebas modifikasi</p>
-              </div>
-            </div>
-            <p className="text-sm text-slate-600 mb-4 leading-relaxed">
-              Anda dapat memeriksa keaslian file hasil unduhan melalui Windows PowerShell bawaan. Buka PowerShell di folder unduhan Anda dan jalankan perintah berikut:
-            </p>
-            <PowerShellVerifyBox
-              filename={release.installer.filename}
-              hash={release.installer.sha256}
-            />
-          </div>
-
-          {/* Card: Informasi Windows SmartScreen */}
-          <div className="bg-amber-50/70 rounded-3xl p-7 sm:p-8 border border-amber-200/80">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-xl bg-amber-200 flex items-center justify-center text-amber-900">
-                <AlertTriangle className="w-6 h-6" />
-              </div>
-              <div>
-                <h3 className="text-lg font-bold text-amber-950">Pemberitahuan Windows SmartScreen</h3>
-                <p className="text-xs text-amber-800/80">Panduan jika muncul layar biru pelindung Windows</p>
-              </div>
-            </div>
-            <p className="text-sm text-amber-900/90 leading-relaxed mb-4">
-              Ketika Anda pertama kali menjalankan file installer pada komputer Windows 10/11, sistem pelindung <strong>Windows Defender SmartScreen</strong> mungkin menampilkan jendela biru bertuliskan <em>&ldquo;Windows protected your PC&rdquo;</em>.
-            </p>
-            <div className="bg-white/80 rounded-2xl p-4 border border-amber-300/60 text-xs sm:text-sm text-slate-700 space-y-2 mb-4">
-              <p className="font-semibold text-slate-900">Langkah untuk melanjutkan instalasi:</p>
-              <ol className="list-decimal list-inside space-y-1 pl-1">
-                <li>Klik teks tautan bertuliskan <strong>&ldquo;More info&rdquo;</strong> (Informasi selengkapnya).</li>
-                <li>Klik tombol <strong>&ldquo;Run anyway&rdquo;</strong> (Tetap jalankan).</li>
-                <li>Aplikasi akan langsung terpasang dan berjalan secara normal.</li>
-              </ol>
-            </div>
-            <p className="text-xs text-amber-800 leading-relaxed">
-              <strong>Mengapa ini terjadi?</strong> KRONABEL adalah proyek independen dan gratis. Sertifikat digital komersial EV (Extended Validation) dari otoritas sertifikasi berbayar puluhan juta rupiah per tahun, sehingga kami memilih mendistribusikannya secara mandiri dengan hash checksum SHA-256 yang transparan untuk membuktikan keaslian dan keamanan berkas.
-            </p>
           </div>
         </div>
 

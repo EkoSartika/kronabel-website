@@ -1,8 +1,9 @@
 import React from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { BrandLogo } from "@/components/BrandLogo";
 import { SITE_CONFIG } from "@/config/site";
-import { Heart, Shield, Laptop, FileText, Download, CheckCircle2 } from "lucide-react";
+import { Heart } from "lucide-react";
 
 export const Footer: React.FC = () => {
   return (
@@ -13,16 +14,21 @@ export const Footer: React.FC = () => {
           <div className="md:col-span-2 space-y-4">
             <BrandLogo size="md" />
 
-            <div className="flex flex-wrap items-center gap-3 pt-2 text-xs font-semibold text-forest-900">
-              <span className="inline-flex items-center gap-1.5 rounded-md bg-forest-100/80 px-2.5 py-1 text-forest-800">
-                <CheckCircle2 className="h-3.5 w-3.5 text-forest-700" /> Sistem Bel Otomatis
-              </span>
-              <span className="inline-flex items-center gap-1.5 rounded-md bg-forest-100/80 px-2.5 py-1 text-forest-800">
-                <Shield className="h-3.5 w-3.5 text-forest-700" /> Presisi &amp; Terjadwal
-              </span>
-              <span className="inline-flex items-center gap-1.5 rounded-md bg-gold-100 px-2.5 py-1 text-gold-900">
-                <Heart className="h-3.5 w-3.5 fill-gold-600 text-gold-600" /> Dukungan Sukarela
-              </span>
+            <div className="pt-2">
+              <Link
+                href="/unduh"
+                className="group block overflow-hidden rounded-xl border border-forest-900/15 bg-white p-1.5 shadow-sm transition-all hover:border-forest-900/30 hover:shadow-md max-w-sm"
+              >
+                <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg bg-forest-950">
+                  <Image
+                    src="/images/screenshot_real_compact.png"
+                    alt="Tampilan Antarmuka Aplikasi KRONABEL"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 380px"
+                    className="object-cover object-top transition-transform duration-300 group-hover:scale-105"
+                  />
+                </div>
+              </Link>
             </div>
           </div>
 
@@ -56,19 +62,16 @@ export const Footer: React.FC = () => {
                 className="inline-flex items-center gap-2 rounded-lg border border-gold-600/30 bg-gold-100/80 px-3.5 py-2 text-xs font-bold text-gold-900 hover:bg-gold-200 transition-all"
               >
                 <Heart className="h-3.5 w-3.5 fill-gold-600 text-gold-600" />
-                <span>Beri Donasi via Saweria</span>
+                <span>Dukung Pengembang</span>
               </Link>
             </div>
           </div>
         </div>
 
-        {/* Disclaimer Merek & Copyright */}
+        {/* Hak Cipta */}
         <div className="mt-12 border-t border-slate-200/80 pt-6 text-xs text-slate-500">
           <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
             <p>© 2026 {SITE_CONFIG.brandName}. Semua hak dilindungi.</p>
-            <p className="max-w-2xl text-[11px] leading-relaxed italic text-slate-500">
-              * {SITE_CONFIG.brandDisclaimer}
-            </p>
           </div>
         </div>
       </div>
