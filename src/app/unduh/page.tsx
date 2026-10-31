@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Download, ShieldCheck, CheckCircle2, AlertTriangle, FileArchive, Laptop, HelpCircle, HardDrive } from "lucide-react";
+import { Download, ShieldCheck, CheckCircle2, AlertTriangle, FileArchive, Laptop, HelpCircle, HardDrive, ExternalLink } from "lucide-react";
 import { SITE_CONFIG } from "@/config/site";
 import { CopyHashButton, PowerShellVerifyBox } from "@/components/DownloadHelper";
 
@@ -33,6 +33,30 @@ export default function DownloadPage() {
             <span>•</span>
             <span>⚡ {release.framework}</span>
           </div>
+        </div>
+
+        {/* Tautan Menuju GitHub Release Resmi */}
+        <div className="mb-10 max-w-4xl mx-auto rounded-2xl border border-emerald-200 bg-emerald-50/70 p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+          <div className="flex items-center gap-3">
+            <span className="flex h-3 w-3 rounded-full bg-emerald-600 animate-pulse shrink-0" />
+            <div>
+              <p className="text-sm font-bold text-slate-900">
+                Distribusi Resmi via GitHub Releases
+              </p>
+              <p className="text-xs text-slate-600 mt-0.5">
+                KRONABEL v{release.latestVersion} ({SITE_CONFIG.targetOS}) dengan verifikasi hash SHA-256 mandiri.
+              </p>
+            </div>
+          </div>
+          <a
+            href={release.githubReleaseUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="shrink-0 inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-emerald-900 bg-white border border-emerald-300 hover:bg-emerald-100/60 transition-colors shadow-sm"
+          >
+            <span>Buka Halaman GitHub Release</span>
+            <ExternalLink className="w-4 h-4 text-emerald-700" />
+          </a>
         </div>
 
         {/* 2 Opsi Unduhan: Installer & Portable */}
@@ -99,13 +123,18 @@ export default function DownloadPage() {
 
             <div>
               {release.installer.downloadUrl ? (
-                <a
-                  href={release.installer.downloadUrl}
-                  className="w-full inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl text-base font-semibold text-white bg-emerald-800 hover:bg-emerald-900 shadow-lg shadow-emerald-900/20 transition-all hover:scale-[1.01]"
-                >
-                  <Download className="w-5 h-5" />
-                  Unduh Setup Installer ({release.installer.size})
-                </a>
+                <>
+                  <a
+                    href={release.installer.downloadUrl}
+                    className="w-full inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl text-base font-semibold text-white bg-emerald-800 hover:bg-emerald-900 shadow-lg shadow-emerald-900/20 transition-all hover:scale-[1.01]"
+                  >
+                    <Download className="w-5 h-5" />
+                    Unduh Setup Installer ({release.installer.size})
+                  </a>
+                  <p className="mt-2.5 text-center text-xs text-slate-500 font-medium">
+                    Pilihan Utama &bull; Versi v{release.latestVersion} ({release.installer.size}) &bull; Windows 10 & 11 (64-bit)
+                  </p>
+                </>
               ) : (
                 <div className="space-y-2">
                   <button
@@ -188,13 +217,18 @@ export default function DownloadPage() {
 
             <div>
               {release.portable.downloadUrl ? (
-                <a
-                  href={release.portable.downloadUrl}
-                  className="w-full inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl text-base font-semibold text-slate-800 bg-slate-100 hover:bg-slate-200 border border-slate-300 transition-all hover:scale-[1.01]"
-                >
-                  <Download className="w-5 h-5" />
-                  Unduh Portable ZIP ({release.portable.size})
-                </a>
+                <>
+                  <a
+                    href={release.portable.downloadUrl}
+                    className="w-full inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl text-base font-semibold text-slate-800 bg-slate-100 hover:bg-slate-200 border border-slate-300 transition-all hover:scale-[1.01]"
+                  >
+                    <Download className="w-5 h-5" />
+                    Unduh Portable ZIP ({release.portable.size})
+                  </a>
+                  <p className="mt-2.5 text-center text-xs text-slate-500 font-medium">
+                    Pilihan Alternatif &bull; Versi v{release.latestVersion} ({release.portable.size}) &bull; Windows 10 & 11 (64-bit)
+                  </p>
+                </>
               ) : (
                 <div className="space-y-2">
                   <button
