@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import AdminShell from "@/components/admin/AdminShell";
 
 interface SiteSettings {
   siteName: string;
@@ -85,8 +84,7 @@ export default function AdminSettingsPage() {
   };
 
   return (
-    <AdminShell currentPath="/admin/pengaturan">
-      <div className="space-y-6 max-w-4xl">
+    <div className="space-y-6 max-w-4xl">
         {/* Toast */}
         {toastMessage && (
           <div
@@ -290,7 +288,6 @@ export default function AdminSettingsPage() {
           </form>
         )}
       </div>
-    </AdminShell>
   );
 }
 

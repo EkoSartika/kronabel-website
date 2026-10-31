@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import AdminShell from "@/components/admin/AdminShell";
 
 interface MediaItem {
   name: string;
@@ -135,8 +134,7 @@ export default function AdminMediaPage() {
   );
 
   return (
-    <AdminShell currentPath="/admin/media">
-      <div className="space-y-6">
+    <div className="space-y-6">
         {/* Toast Notification */}
         {toastMessage && (
           <div
@@ -364,7 +362,6 @@ export default function AdminMediaPage() {
           </div>
         )}
       </div>
-    </AdminShell>
   );
 }
 

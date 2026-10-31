@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import AdminShell from "@/components/admin/AdminShell";
 
 interface FeedbackItem {
   id: string;
@@ -169,8 +168,7 @@ export default function AdminFeedbackPage() {
   const totalPages = Math.ceil(totalCount / pageSize);
 
   return (
-    <AdminShell currentPath="/admin/masukan">
-      <div className="space-y-6">
+    <div className="space-y-6">
         {/* Toast */}
         {toastMessage && (
           <div
@@ -511,7 +509,6 @@ export default function AdminFeedbackPage() {
           </div>
         )}
       </div>
-    </AdminShell>
   );
 }
 
