@@ -79,9 +79,9 @@ git push -u origin main
 
 1. Tunggu proses build Vercel berjalan (biasanya memerlukan waktu 1–2 menit).
 2. Setelah selesai, Vercel akan menampilkan layar ucapan selamat (*Congratulations!*) beserta tautan domain resmi.
-3. **Catat URL Resmi yang Diberikan Vercel**:
-   - Format domain resmi biasanya berbentuk: `https://kronabel-website.vercel.app` (atau nama unik sesuai ketersediaan di sistem Vercel).
-   - *Penting: Jangan menebak atau menggunakan URL sebelum dashboard Vercel menyatakannya aktif.*
+3. **Domain Produksi Resmi Aktif**:
+   - Domain produksi utama: `https://kronabel.vercel.app`
+   - Domain alternatif Vercel: `https://kronabel-website.vercel.app` (otomatis mengalihkan ke domain utama).
 4. Uji website yang sudah tayang online:
    - Periksa halaman Beranda (`/`).
    - Periksa halaman Panduan (`/panduan`).

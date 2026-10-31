@@ -6,6 +6,7 @@
 export const SITE_CONFIG = {
   brandName: "KRONABEL",
   brandSubtitle: "Aplikasi Bel Sekolah Otomatis",
+  siteUrl: "https://kronabel.vercel.app",
   tagline: "Bel Otomatis, Waktu Lebih Teratur.",
   description:
     "Kelola jadwal bel sekolah secara praktis melalui aplikasi Windows yang mudah digunakan. Gratis, tanpa biaya langganan, dan bekerja 100% offline.",

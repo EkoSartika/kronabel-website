@@ -1,9 +1,9 @@
-"use client";
-
-import React, { useState } from "react";
+import React from "react";
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { SITE_CONFIG } from "@/config/site";
+import { FaqSection } from "@/components/FaqSection";
 import {
   Download,
   Heart,
@@ -23,12 +23,20 @@ import {
   HelpCircle,
 } from "lucide-react";
 
-export default function HomePage() {
-  const [openFaq, setOpenFaq] = useState<number | null>(0);
+export const metadata: Metadata = {
+  title: `${SITE_CONFIG.brandName} — ${SITE_CONFIG.tagline}`,
+  description: `${SITE_CONFIG.brandSubtitle}. ${SITE_CONFIG.description}`,
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title: `${SITE_CONFIG.brandName} — ${SITE_CONFIG.tagline}`,
+    description: `${SITE_CONFIG.brandSubtitle}. ${SITE_CONFIG.description}`,
+    url: "/",
+  },
+};
 
-  const toggleFaq = (index: number) => {
-    setOpenFaq(openFaq === index ? null : index);
-  };
+export default function HomePage() {
 
   const faqs = [
     {
@@ -446,32 +454,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="mt-10 space-y-3">
-            {faqs.map((faq, idx) => (
-              <div
-                key={idx}
-                className="overflow-hidden rounded-xl border border-slate-200 bg-white transition-all shadow-sm"
-              >
-                <button
-                  type="button"
-                  onClick={() => toggleFaq(idx)}
-                  className="flex w-full items-center justify-between px-5 py-4 text-left font-bold text-forest-950 hover:bg-ivory-50"
-                >
-                  <span className="text-sm sm:text-base">{faq.q}</span>
-                  <ChevronDown
-                    className={`h-5 w-5 text-gold-600 transition-transform duration-200 ${
-                      openFaq === idx ? "rotate-180 transform" : ""
-                    }`}
-                  />
-                </button>
-                {openFaq === idx && (
-                  <div className="border-t border-slate-100 bg-ivory-muted/40 px-5 py-4 text-xs leading-relaxed text-slate-600 sm:text-sm">
-                    {faq.a}
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
+          <FaqSection faqs={faqs} />
         </div>
       </section>
 

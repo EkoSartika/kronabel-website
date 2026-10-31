@@ -1,10 +1,19 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Info, ShieldCheck, Heart, Laptop, Compass, CheckCircle2, AlertCircle, ArrowRight } from "lucide-react";
 import { SITE_CONFIG } from "@/config/site";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: `Tentang Kami - ${SITE_CONFIG.brandName}`,
   description: `Mengenal ${SITE_CONFIG.brandName} (${SITE_CONFIG.brandSubtitle}), latar belakang pengembangan, filosofi gratis mandiri, dan transparansi merek.`,
+  alternates: {
+    canonical: "/tentang",
+  },
+  openGraph: {
+    title: `Tentang Kami - ${SITE_CONFIG.brandName}`,
+    description: `Mengenal ${SITE_CONFIG.brandName} (${SITE_CONFIG.brandSubtitle}), latar belakang pengembangan, filosofi gratis mandiri, dan transparansi merek.`,
+    url: "/tentang",
+  },
 };
 
 export default function AboutPage() {

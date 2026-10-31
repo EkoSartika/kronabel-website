@@ -1,10 +1,19 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Heart, Coffee, ShieldCheck, CheckCircle2, Sparkles, HelpCircle, ArrowUpRight, QrCode, Clock } from "lucide-react";
 import { SITE_CONFIG } from "@/config/site";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: `Dukungan Sukarela - ${SITE_CONFIG.brandName}`,
   description: `Dukung pengembangan mandiri ${SITE_CONFIG.brandName} (${SITE_CONFIG.brandSubtitle}). Aplikasi bel sekolah 100% gratis tanpa biaya lisensi maupun langganan.`,
+  alternates: {
+    canonical: "/dukungan",
+  },
+  openGraph: {
+    title: `Dukungan Sukarela - ${SITE_CONFIG.brandName}`,
+    description: `Dukung pengembangan mandiri ${SITE_CONFIG.brandName} (${SITE_CONFIG.brandSubtitle}).`,
+    url: "/dukungan",
+  },
 };
 
 export default function DonationPage() {

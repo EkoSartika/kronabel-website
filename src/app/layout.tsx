@@ -12,7 +12,11 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: `${SITE_CONFIG.brandName} — ${SITE_CONFIG.tagline}`,
+  metadataBase: new URL(SITE_CONFIG.siteUrl),
+  title: {
+    default: `${SITE_CONFIG.brandName} — ${SITE_CONFIG.tagline}`,
+    template: `%s | ${SITE_CONFIG.brandName}`,
+  },
   description: `${SITE_CONFIG.brandSubtitle}. ${SITE_CONFIG.description}`,
   keywords: [
     "Bel Sekolah Otomatis",
@@ -27,6 +31,11 @@ export const metadata: Metadata = {
   icons: {
     icon: "/images/app_icon.png",
     shortcut: "/images/app_icon.ico",
+  },
+  openGraph: {
+    type: "website",
+    locale: "id_ID",
+    siteName: SITE_CONFIG.brandName,
   },
 };
 

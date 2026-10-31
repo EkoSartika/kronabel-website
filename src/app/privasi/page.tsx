@@ -1,10 +1,19 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ShieldCheck, HardDrive, Globe, Download, Heart, Lock, CheckCircle2 } from "lucide-react";
 import { SITE_CONFIG } from "@/config/site";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: `Kebijakan Privasi - ${SITE_CONFIG.brandName}`,
   description: `Kebijakan privasi resmi ${SITE_CONFIG.brandName} (${SITE_CONFIG.brandSubtitle}). Penjelasan transparansi pengelolaan data aplikasi offline, situs web, unduhan, dan donasi.`,
+  alternates: {
+    canonical: "/privasi",
+  },
+  openGraph: {
+    title: `Kebijakan Privasi - ${SITE_CONFIG.brandName}`,
+    description: `Kebijakan privasi resmi ${SITE_CONFIG.brandName} (${SITE_CONFIG.brandSubtitle}).`,
+    url: "/privasi",
+  },
 };
 
 export default function PrivacyPage() {

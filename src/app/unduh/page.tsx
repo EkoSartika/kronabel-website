@@ -1,11 +1,20 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Download, ShieldCheck, CheckCircle2, AlertTriangle, FileArchive, Laptop, HelpCircle, HardDrive, ExternalLink } from "lucide-react";
 import { SITE_CONFIG } from "@/config/site";
 import { CopyHashButton, PowerShellVerifyBox } from "@/components/DownloadHelper";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: `Unduh Aplikasi Resmi - ${SITE_CONFIG.brandName}`,
   description: `Unduh ${SITE_CONFIG.brandName} (${SITE_CONFIG.brandSubtitle}) versi ${SITE_CONFIG.release.latestVersion} untuk Windows 10 & Windows 11 64-bit. Tersedia paket Installer Setup dan Portable ZIP.`,
+  alternates: {
+    canonical: "/unduh",
+  },
+  openGraph: {
+    title: `Unduh Aplikasi Resmi - ${SITE_CONFIG.brandName}`,
+    description: `Unduh ${SITE_CONFIG.brandName} (${SITE_CONFIG.brandSubtitle}) versi ${SITE_CONFIG.release.latestVersion} untuk Windows 10 & Windows 11 64-bit.`,
+    url: "/unduh",
+  },
 };
 
 export default function DownloadPage() {

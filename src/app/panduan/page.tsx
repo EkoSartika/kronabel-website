@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import {
   AlertCircle,
@@ -6,9 +7,17 @@ import {
 } from "lucide-react";
 import { SITE_CONFIG } from "@/config/site";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: `Panduan Penggunaan Lengkap - ${SITE_CONFIG.brandName}`,
   description: `Dokumentasi dan petunjuk praktis penggunaan aplikasi ${SITE_CONFIG.brandName} (${SITE_CONFIG.brandSubtitle}). Panduan instalasi, konfigurasi jadwal, multi-profil, pustaka audio, dan pemecahan masalah.`,
+  alternates: {
+    canonical: "/panduan",
+  },
+  openGraph: {
+    title: `Panduan Penggunaan Lengkap - ${SITE_CONFIG.brandName}`,
+    description: `Dokumentasi dan petunjuk praktis penggunaan aplikasi ${SITE_CONFIG.brandName} (${SITE_CONFIG.brandSubtitle}).`,
+    url: "/panduan",
+  },
 };
 
 export default function GuidePage() {

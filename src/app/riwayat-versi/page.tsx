@@ -1,10 +1,19 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { History, Tag, CheckCircle2, ShieldCheck, Download, Sparkles, AlertCircle } from "lucide-react";
 import { SITE_CONFIG } from "@/config/site";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: `Riwayat Versi & Catatan Rilis - ${SITE_CONFIG.brandName}`,
   description: `Catatan rilis lengkap dan riwayat pembaruan aplikasi ${SITE_CONFIG.brandName} (${SITE_CONFIG.brandSubtitle}) mulai dari v1.2.0 hingga rilis terbaru v1.2.2.`,
+  alternates: {
+    canonical: "/riwayat-versi",
+  },
+  openGraph: {
+    title: `Riwayat Versi & Catatan Rilis - ${SITE_CONFIG.brandName}`,
+    description: `Catatan rilis lengkap dan riwayat pembaruan aplikasi ${SITE_CONFIG.brandName} (${SITE_CONFIG.brandSubtitle}).`,
+    url: "/riwayat-versi",
+  },
 };
 
 export default function ChangelogPage() {
