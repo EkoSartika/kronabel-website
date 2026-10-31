@@ -1,6 +1,12 @@
 -- =============================================================================
--- KRONABEL CMS & FEEDBACK SYSTEM - SUPABASE INITIAL MIGRATION
+-- KRONABEL CMS & FEEDBACK SYSTEM - SUPABASE INITIAL MIGRATION (SECURE v2)
 -- File: supabase/migrations/20261031_kronabel_cms_init.sql
+-- Revisi Keamanan: 2026-10-31
+--   - is_admin() diperkuat dengan search_path terkunci & schema-qualified
+--   - Feedback INSERT diperketat: hanya field izin terbatas, status terkunci 'baru'
+--   - site_settings SELECT dibatasi: anon hanya dapat baca key publik
+--   - admin_users UPDATE diperketat: role tidak bisa dinaikan sendiri
+--   - Storage: SVG dan ICO dihapus dari allowed MIME types
 -- =============================================================================
 
 -- Enable UUID extension if not already enabled
@@ -20,6 +26,7 @@ CREATE TABLE IF NOT EXISTS public.site_settings (
     key TEXT PRIMARY KEY,
     value JSONB NOT NULL,
     description TEXT,
+    is_public BOOLEAN NOT NULL DEFAULT false,   -- flag: apakah key ini boleh dibaca anon
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_by UUID REFERENCES auth.users(id) ON DELETE SET NULL
 );
@@ -39,13 +46,14 @@ CREATE TABLE IF NOT EXISTS public.site_content (
 -- 4. TABEL FEEDBACK (SARAN & MASUKAN)
 CREATE TABLE IF NOT EXISTS public.feedback (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    name TEXT,
-    email TEXT,
+    name TEXT CHECK (name IS NULL OR length(name) <= 100),
+    email TEXT CHECK (email IS NULL OR (length(email) <= 100 AND email ~* '^[^@\s]+@[^@\s]+\.[^@\s]+$')),
     category TEXT NOT NULL CHECK (category IN ('saran', 'kritik', 'bug', 'fitur', 'lainnya')),
-    message TEXT NOT NULL,
+    message TEXT NOT NULL CHECK (length(message) >= 5 AND length(message) <= 3000),
+    -- status dikunci ke 'baru' saat INSERT via constraint trigger di bawah
     status TEXT NOT NULL DEFAULT 'baru' CHECK (status IN ('baru', 'dibaca', 'diproses', 'selesai')),
-    ip_hash TEXT,
-    user_agent TEXT,
+    ip_hash TEXT CHECK (ip_hash IS NULL OR length(ip_hash) <= 64),  -- SHA-256 hex (max 64 char)
+    user_agent TEXT CHECK (user_agent IS NULL OR length(user_agent) <= 200),
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
@@ -65,10 +73,37 @@ CREATE TABLE IF NOT EXISTS public.content_history (
 -- Indexes for performance
 CREATE INDEX IF NOT EXISTS idx_site_content_page ON public.site_content(page);
 CREATE INDEX IF NOT EXISTS idx_site_content_status ON public.site_content(status);
+CREATE INDEX IF NOT EXISTS idx_site_settings_public ON public.site_settings(is_public);
 CREATE INDEX IF NOT EXISTS idx_feedback_category ON public.feedback(category);
 CREATE INDEX IF NOT EXISTS idx_feedback_status ON public.feedback(status);
+CREATE INDEX IF NOT EXISTS idx_feedback_ip_hash ON public.feedback(ip_hash);
 CREATE INDEX IF NOT EXISTS idx_feedback_created_at ON public.feedback(created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_content_history_key ON public.content_history(content_key);
+
+-- =============================================================================
+-- TRIGGER: Kunci status feedback ke 'baru' saat INSERT publik
+-- Admin mengubah status via UPDATE (bukan INSERT), sehingga ini aman.
+-- =============================================================================
+CREATE OR REPLACE FUNCTION public.enforce_feedback_insert_defaults()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public, pg_catalog
+AS $$
+BEGIN
+    -- Paksa status selalu 'baru' saat INSERT (anon maupun authenticated)
+    NEW.status := 'baru';
+    -- Pastikan created_at dan updated_at tidak bisa dimanipulasi dari luar
+    NEW.created_at := NOW();
+    NEW.updated_at := NOW();
+    RETURN NEW;
+END;
+$$;
+
+DROP TRIGGER IF EXISTS trg_feedback_insert_defaults ON public.feedback;
+CREATE TRIGGER trg_feedback_insert_defaults
+BEFORE INSERT ON public.feedback
+FOR EACH ROW EXECUTE FUNCTION public.enforce_feedback_insert_defaults();
 
 -- =============================================================================
 -- ROW LEVEL SECURITY (RLS) POLICIES
@@ -80,40 +115,70 @@ ALTER TABLE public.site_content ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.feedback ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.content_history ENABLE ROW LEVEL SECURITY;
 
--- Helper function to check if current user is an admin
+-- =============================================================================
+-- HELPER FUNCTION: is_admin()
+-- Diperkuat:
+--   - search_path dikunci ke public & pg_catalog (mencegah search_path injection)
+--   - Menggunakan nama schema-qualified secara eksplisit
+--   - SECURITY DEFINER tetap (diperlukan agar RLS bisa memanggil tanpa rekursi)
+-- =============================================================================
 CREATE OR REPLACE FUNCTION public.is_admin()
 RETURNS BOOLEAN
 LANGUAGE plpgsql
 SECURITY DEFINER
+SET search_path = public, pg_catalog
 AS $$
 BEGIN
   RETURN EXISTS (
-    SELECT 1 FROM public.admin_users
-    WHERE id = auth.uid()
+    SELECT 1
+    FROM public.admin_users au
+    WHERE au.id = auth.uid()
   );
 END;
 $$;
 
+-- Revoke execute dari public (hanya dipanggil internal DB/RLS)
+REVOKE ALL ON FUNCTION public.is_admin() FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION public.is_admin() TO authenticated;
+GRANT EXECUTE ON FUNCTION public.is_admin() TO anon;  -- diperlukan agar RLS policies on anon bisa evaluasi
+
+-- =============================================================================
 -- RLS: admin_users
+-- =============================================================================
 DROP POLICY IF EXISTS "Admins can view admin_users" ON public.admin_users;
 CREATE POLICY "Admins can view admin_users"
 ON public.admin_users FOR SELECT
 TO authenticated
 USING (public.is_admin());
 
+-- UPDATE: admin hanya boleh ubah username sendiri, TIDAK BOLEH ubah role
 DROP POLICY IF EXISTS "Admins can update own admin profile" ON public.admin_users;
-CREATE POLICY "Admins can update own admin profile"
+CREATE POLICY "Admins can update own username only"
 ON public.admin_users FOR UPDATE
 TO authenticated
-USING (id = auth.uid())
-WITH CHECK (id = auth.uid());
+USING (id = auth.uid() AND public.is_admin())
+WITH CHECK (
+    id = auth.uid()
+    -- role tidak boleh diubah melalui RLS path (perubahan role hanya via service_role / admin API)
+    AND role = (SELECT role FROM public.admin_users WHERE id = auth.uid())
+);
 
+-- =============================================================================
 -- RLS: site_settings
+-- Publik (anon): hanya bisa baca key yang is_public = true
+-- Admin: dapat membaca dan mengelola semua key
+-- =============================================================================
 DROP POLICY IF EXISTS "Public can view public site settings" ON public.site_settings;
-CREATE POLICY "Public can view public site settings"
+CREATE POLICY "Anon can view public site settings only"
 ON public.site_settings FOR SELECT
-TO anon, authenticated
-USING (true);
+TO anon
+USING (is_public = true);
+
+DROP POLICY IF EXISTS "Authenticated can view public site settings" ON public.site_settings;
+CREATE POLICY "Admins can view all site settings"
+ON public.site_settings FOR SELECT
+TO authenticated
+USING (is_public = true OR public.is_admin());
 
 DROP POLICY IF EXISTS "Admins can manage site settings" ON public.site_settings;
 CREATE POLICY "Admins can manage site settings"
@@ -122,7 +187,9 @@ TO authenticated
 USING (public.is_admin())
 WITH CHECK (public.is_admin());
 
+-- =============================================================================
 -- RLS: site_content
+-- =============================================================================
 DROP POLICY IF EXISTS "Public can view published content" ON public.site_content;
 CREATE POLICY "Public can view published content"
 ON public.site_content FOR SELECT
@@ -136,15 +203,27 @@ TO authenticated
 USING (public.is_admin())
 WITH CHECK (public.is_admin());
 
+-- =============================================================================
 -- RLS: feedback
+-- INSERT: anon & authenticated, TAPI field yang diizinkan sangat terbatas.
+--   - id, status, created_at, updated_at dikontrol oleh trigger & DB default
+--   - ip_hash, user_agent diisi oleh server (API route), BUKAN dari client body
+--   - RLS hanya memvalidasi field konten (name, email, category, message)
+-- SELECT/UPDATE/DELETE: hanya admin
+-- =============================================================================
 DROP POLICY IF EXISTS "Anyone can insert feedback" ON public.feedback;
-CREATE POLICY "Anyone can insert feedback"
+CREATE POLICY "Public can submit feedback (content only)"
 ON public.feedback FOR INSERT
 TO anon, authenticated
 WITH CHECK (
-    message IS NOT NULL AND
-    length(message) >= 5 AND
-    length(message) <= 3000
+    -- Validasi konten
+    message IS NOT NULL
+    AND length(trim(message)) >= 5
+    AND length(message) <= 3000
+    AND category IN ('saran', 'kritik', 'bug', 'fitur', 'lainnya')
+    -- name & email opsional tapi dibatasi panjangnya
+    AND (name IS NULL OR length(name) <= 100)
+    AND (email IS NULL OR length(email) <= 100)
 );
 
 DROP POLICY IF EXISTS "Only admins can view feedback" ON public.feedback;
@@ -154,7 +233,7 @@ TO authenticated
 USING (public.is_admin());
 
 DROP POLICY IF EXISTS "Only admins can update or delete feedback" ON public.feedback;
-CREATE POLICY "Only admins can update or delete feedback"
+CREATE POLICY "Only admins can update feedback"
 ON public.feedback FOR UPDATE
 TO authenticated
 USING (public.is_admin())
@@ -166,7 +245,9 @@ ON public.feedback FOR DELETE
 TO authenticated
 USING (public.is_admin());
 
+-- =============================================================================
 -- RLS: content_history
+-- =============================================================================
 DROP POLICY IF EXISTS "Only admins can view content history" ON public.content_history;
 CREATE POLICY "Only admins can view content history"
 ON public.content_history FOR SELECT
@@ -181,19 +262,21 @@ WITH CHECK (public.is_admin());
 
 -- =============================================================================
 -- STORAGE BUCKET: website-media
+-- SVG dihapus (XSS risk), ICO dihapus (tidak diperlukan untuk CMS konten)
+-- Hanya JPG, PNG, WebP yang diperbolehkan
 -- =============================================================================
 INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
 VALUES (
     'website-media',
     'website-media',
     true,
-    5242880, -- 5 MB
-    ARRAY['image/jpeg', 'image/png', 'image/webp', 'image/svg+xml', 'image/x-icon', 'image/vnd.microsoft.icon']
+    5242880,  -- 5 MB
+    ARRAY['image/jpeg', 'image/png', 'image/webp']
 )
 ON CONFLICT (id) DO UPDATE SET
     public = true,
     file_size_limit = 5242880,
-    allowed_mime_types = ARRAY['image/jpeg', 'image/png', 'image/webp', 'image/svg+xml', 'image/x-icon', 'image/vnd.microsoft.icon'];
+    allowed_mime_types = ARRAY['image/jpeg', 'image/png', 'image/webp'];
 
 -- Storage Policies
 DROP POLICY IF EXISTS "Public can view website media" ON storage.objects;
@@ -222,10 +305,12 @@ USING (bucket_id = 'website-media' AND public.is_admin());
 
 -- =============================================================================
 -- SEED DATA (DEFAULT CONTENT & SETTINGS)
+-- is_public = true  → dapat dibaca anon (website publik)
+-- is_public = false → internal admin only
 -- =============================================================================
 
-INSERT INTO public.site_settings (key, value, description)
-VALUES 
+INSERT INTO public.site_settings (key, value, is_public, description)
+VALUES
 (
     'general',
     '{
@@ -236,6 +321,7 @@ VALUES
         "targetOS": "Windows 10 & Windows 11 (64-bit)",
         "author": "Pengembang KRONABEL"
     }'::jsonb,
+    true,
     'Pengaturan umum identitas website'
 ),
 (
@@ -247,6 +333,7 @@ VALUES
         "label": "Dukung Pengembang",
         "description": "KRONABEL 100% gratis digunakan untuk seluruh sekolah di Indonesia tanpa biaya lisensi maupun langganan. Jika Anda merasa aplikasi ini bermanfaat, Anda dapat memberikan dukungan untuk keberlanjutan pengembangan."
     }'::jsonb,
+    true,
     'Konfigurasi donasi sukarela Saweria'
 ),
 (
@@ -271,6 +358,7 @@ VALUES
             "downloadUrl": "https://github.com/EkoSartika/kronabel/releases/download/v1.2.2/BelOtomatisSekolah_Portable_v1.2.2.zip"
         }
     }'::jsonb,
+    true,
     'Konfigurasi rilis dan link download aplikasi'
 )
 ON CONFLICT (key) DO NOTHING;
@@ -285,7 +373,7 @@ VALUES
     'Hero Section Beranda',
     '{
         "heading": "KRONABEL",
-        "tagline": "“Bel Otomatis, Waktu Lebih Teratur.”",
+        "tagline": "\u201cBel Otomatis, Waktu Lebih Teratur.\u201d",
         "description": "Kelola jadwal bel sekolah secara praktis melalui aplikasi Windows yang mudah digunakan. Gratis, tanpa biaya langganan, dan bekerja 100% offline.",
         "ctaDownloadText": "Unduh Gratis (v1.2.2)",
         "ctaDownloadHref": "/unduh",
@@ -342,4 +430,3 @@ VALUES
     'published'
 )
 ON CONFLICT (key) DO NOTHING;
-

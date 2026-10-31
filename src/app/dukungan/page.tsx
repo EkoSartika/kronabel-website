@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Heart, Coffee, CheckCircle2, ArrowUpRight } from "lucide-react";
 import { SITE_CONFIG } from "@/config/site";
+import { getPageContent } from "@/lib/supabase/content";
 
 export const metadata: Metadata = {
   title: `Dukungan Pengembang - ${SITE_CONFIG.brandName}`,
@@ -16,8 +17,18 @@ export const metadata: Metadata = {
   },
 };
 
-export default function DonationPage() {
+export default async function DonationPage() {
   const { donation } = SITE_CONFIG;
+
+  const support = await getPageContent("support.intro", {
+    badge: "Dukungan Pengembang",
+    title: `Dukung Pengembangan ${SITE_CONFIG.brandName}`,
+    subtitle: "KRONABEL didedikasikan 100% gratis untuk seluruh satuan pendidikan di Indonesia tanpa batasan waktu dan tanpa biaya tersembunyi.",
+    cardTitle: "Traktir Kopi untuk Pengembang",
+    cardDescription: `Jika ${SITE_CONFIG.brandName} terbukti membantu ketertiban waktu belajar di sekolah Anda, meringankan tugas bapak/ibu guru piket, dan menghemat anggaran sekolah, Anda dapat menyisihkan donasi sukarela melalui platform Saweria.`,
+    buttonText: "Dukung KRONABEL",
+    disclaimer: "Dukungan ini bersifat sukarela untuk mendukung keberlanjutan pengembangan. Aplikasi KRONABEL tetap 100% gratis digunakan untuk seluruh sekolah di Indonesia.",
+  });
 
   return (
     <div className="py-12 sm:py-16">
@@ -26,13 +37,13 @@ export default function DonationPage() {
         <div className="text-center max-w-2xl mx-auto mb-12">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-100 text-amber-950 text-xs font-semibold uppercase tracking-wider mb-4 border border-amber-200">
             <Heart className="w-4 h-4 text-amber-600 fill-amber-600" />
-            Dukungan Pengembang
+            {support.badge || "Dukungan Pengembang"}
           </div>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight">
-            Dukung Pengembangan <span className="text-emerald-800">{SITE_CONFIG.brandName}</span>
+            {support.title || `Dukung Pengembangan ${SITE_CONFIG.brandName}`}
           </h1>
           <p className="mt-4 text-base sm:text-lg text-slate-600 leading-relaxed">
-            KRONABEL didedikasikan 100% gratis untuk seluruh satuan pendidikan di Indonesia tanpa batasan waktu dan tanpa biaya tersembunyi.
+            {support.subtitle || "KRONABEL didedikasikan 100% gratis untuk seluruh satuan pendidikan di Indonesia tanpa batasan waktu dan tanpa biaya tersembunyi."}
           </p>
         </div>
 
@@ -46,11 +57,11 @@ export default function DonationPage() {
             </div>
 
             <h2 className="text-2xl sm:text-3xl font-bold text-slate-900">
-              Traktir Kopi untuk Pengembang
+              {support.cardTitle || "Traktir Kopi untuk Pengembang"}
             </h2>
 
             <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
-              Jika {SITE_CONFIG.brandName} terbukti membantu ketertiban waktu belajar di sekolah Anda, meringankan tugas bapak/ibu guru piket, dan menghemat anggaran sekolah, Anda dapat menyisihkan donasi sukarela melalui platform <strong>Saweria</strong>.
+              {support.cardDescription || `Jika ${SITE_CONFIG.brandName} terbukti membantu ketertiban waktu belajar di sekolah Anda, meringankan tugas bapak/ibu guru piket, dan menghemat anggaran sekolah, Anda dapat menyisihkan donasi sukarela melalui platform Saweria.`}
             </p>
 
             {/* Saweria Action Button */}
@@ -62,11 +73,11 @@ export default function DonationPage() {
                 className="inline-flex items-center justify-center gap-3 w-full sm:w-auto px-8 py-4 rounded-2xl text-base font-bold text-slate-950 bg-amber-400 hover:bg-amber-300 shadow-lg shadow-amber-400/25 transition-all hover:scale-[1.02]"
               >
                 <Heart className="w-5 h-5 fill-slate-950 text-slate-950" />
-                <span>Dukung KRONABEL</span>
+                <span>{support.buttonText || "Dukung KRONABEL"}</span>
                 <ArrowUpRight className="w-5 h-5 text-slate-950" />
               </a>
               <p className="text-xs text-slate-600 font-medium leading-relaxed">
-                Dukungan ini bersifat sukarela untuk mendukung keberlanjutan pengembangan. Aplikasi KRONABEL tetap 100% gratis digunakan untuk seluruh sekolah di Indonesia.
+                {support.disclaimer || "Dukungan ini bersifat sukarela untuk mendukung keberlanjutan pengembangan. Aplikasi KRONABEL tetap 100% gratis digunakan untuk seluruh sekolah di Indonesia."}
               </p>
               <p className="text-[11px] text-slate-400">
                 Mendukung QRIS, GoPay, OVO, DANA, ShopeePay, LinkAja, dan transfer bank via Saweria.

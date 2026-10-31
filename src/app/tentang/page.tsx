@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ShieldCheck, Heart, Laptop, Compass, ArrowRight } from "lucide-react";
 import { SITE_CONFIG } from "@/config/site";
+import { getPageContent } from "@/lib/supabase/content";
 
 export const metadata: Metadata = {
   title: `Tentang Kami - ${SITE_CONFIG.brandName}`,
@@ -16,7 +17,16 @@ export const metadata: Metadata = {
   },
 };
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const intro = await getPageContent("about.intro", {
+    title: `Mengenal ${SITE_CONFIG.brandName}`,
+    subtitle: "Inisiatif perangkat lunak bel sekolah otomatis yang handal, elegan, dan didedikasikan sepenuhnya untuk pendidikan di Indonesia.",
+    purposeTitle: "Latar Belakang & Tujuan",
+    purposeSubtitle: "Menghadirkan ketertiban waktu belajar tanpa biaya tinggi",
+    paragraph1: "Ketepatan pergantian jam pelajaran merupakan salah satu fondasi disiplin di lingkungan sekolah. Namun, banyak sekolah masih bergantung pada pemukulan bel manual oleh petugas piket yang rentan terlambat, atau terbebani oleh perangkat bel digital impor berbiaya jutaan rupiah yang sulit diatur jadwalnya.",
+    paragraph2: `${SITE_CONFIG.brandName} hadir sebagai solusi perangkat lunak Windows yang dapat dipasang langsung pada komputer ruang guru atau ruang piket. Dengan menghubungkan output audio komputer ke amplifier pengeras suara sekolah, seluruh jadwal bel berbunyi secara presisi, teratur, dan otomatis setiap hari.`,
+  });
+
   return (
     <div className="py-12 sm:py-16">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -32,7 +42,7 @@ export default function AboutPage() {
             </span>
           </h1>
           <p className="mt-6 text-base sm:text-lg text-slate-600 leading-relaxed max-w-2xl mx-auto">
-            Inisiatif perangkat lunak bel sekolah otomatis yang handal, elegan, dan didedikasikan sepenuhnya untuk pendidikan di Indonesia.
+            {intro.subtitle || "Inisiatif perangkat lunak bel sekolah otomatis yang handal, elegan, dan didedikasikan sepenuhnya untuk pendidikan di Indonesia."}
           </p>
         </div>
 
@@ -43,15 +53,15 @@ export default function AboutPage() {
               <Compass className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-slate-900">Latar Belakang & Tujuan</h2>
-              <p className="text-xs text-slate-500">Menghadirkan ketertiban waktu belajar tanpa biaya tinggi</p>
+              <h2 className="text-xl font-bold text-slate-900">{intro.purposeTitle || "Latar Belakang & Tujuan"}</h2>
+              <p className="text-xs text-slate-500">{intro.purposeSubtitle || "Menghadirkan ketertiban waktu belajar tanpa biaya tinggi"}</p>
             </div>
           </div>
           <p className="text-sm sm:text-base text-slate-700 leading-relaxed">
-            Ketepatan pergantian jam pelajaran merupakan salah satu fondasi disiplin di lingkungan sekolah. Namun, banyak sekolah masih bergantung pada pemukulan bel manual oleh petugas piket yang rentan terlambat, atau terbebani oleh perangkat bel digital impor berbiaya jutaan rupiah yang sulit diatur jadwalnya.
+            {intro.paragraph1}
           </p>
           <p className="text-sm sm:text-base text-slate-700 leading-relaxed">
-            <strong>{SITE_CONFIG.brandName}</strong> hadir sebagai solusi perangkat lunak Windows yang dapat dipasang langsung pada komputer ruang guru atau ruang piket. Dengan menghubungkan output audio komputer ke amplifier pengeras suara sekolah, seluruh jadwal bel berbunyi secara presisi, teratur, dan otomatis setiap hari.
+            {intro.paragraph2}
           </p>
         </div>
 

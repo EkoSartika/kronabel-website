@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { SITE_CONFIG } from "@/config/site";
 import { FaqSection } from "@/components/FaqSection";
+import { getPageContent } from "@/lib/supabase/content";
 import {
   Download,
   Heart,
@@ -36,7 +37,26 @@ export const metadata: Metadata = {
   },
 };
 
-export default function HomePage() {
+export default async function HomePage() {
+  const heroContent = await getPageContent("home.hero", {
+    heading: SITE_CONFIG.brandName,
+    tagline: `“${SITE_CONFIG.tagline}”`,
+    description: SITE_CONFIG.description,
+    ctaDownloadText: `Unduh Gratis (v${SITE_CONFIG.release.latestVersion})`,
+    ctaDownloadHref: "/unduh",
+    ctaSupportText: "Dukung Pengembang",
+    ctaSupportHref: "/dukungan",
+    previewImage: "/images/screenshot_real_compact.png",
+  });
+
+  const ctaContent = await getPageContent("home.cta_bottom", {
+    title: `Mulai Gunakan ${SITE_CONFIG.brandName} Hari Ini`,
+    description: "Tingkatkan ketepatan jam pelajaran di sekolah Anda dengan aplikasi bel otomatis yang handal, elegan, dan mudah dikelola.",
+    primaryButtonText: "Buka Halaman Unduh",
+    primaryButtonHref: "/unduh",
+    secondaryButtonText: "Pelajari Panduan",
+    secondaryButtonHref: "/panduan",
+  });
 
   const faqs = [
     {
@@ -83,34 +103,34 @@ export default function HomePage() {
               {/* Title & Tagline */}
               <div className="space-y-2">
                 <h1 className="text-4xl font-black tracking-tight text-forest-950 sm:text-5xl lg:text-6xl">
-                  {SITE_CONFIG.brandName}
+                  {heroContent.heading || SITE_CONFIG.brandName}
                 </h1>
                 <p className="text-2xl font-bold tracking-tight text-forest-800 sm:text-3xl">
-                  &ldquo;{SITE_CONFIG.tagline}&rdquo;
+                  &ldquo;{(heroContent.tagline || SITE_CONFIG.tagline).replace(/^[“"']+|[”"']+$/g, "")}&rdquo;
                 </p>
               </div>
 
               {/* Description */}
               <p className="mx-auto max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg lg:mx-0">
-                {SITE_CONFIG.description}
+                {heroContent.description || SITE_CONFIG.description}
               </p>
 
               {/* CTA Buttons */}
               <div className="flex flex-col items-center justify-center gap-3 pt-3 sm:flex-row lg:justify-start">
                 <Link
-                  href="/unduh"
+                  href={heroContent.ctaDownloadHref || "/unduh"}
                   className="flex w-full items-center justify-center gap-2.5 rounded-xl bg-forest-900 px-7 py-3.5 text-base font-bold text-white shadow-lg shadow-forest-900/20 transition-all hover:bg-forest-800 hover:shadow-xl sm:w-auto"
                 >
                   <Download className="h-5 w-5" />
-                  <span>Unduh Gratis (v{SITE_CONFIG.release.latestVersion})</span>
+                  <span>{heroContent.ctaDownloadText || `Unduh Gratis (v${SITE_CONFIG.release.latestVersion})`}</span>
                 </Link>
 
                 <Link
-                  href="/dukungan"
+                  href={heroContent.ctaSupportHref || "/dukungan"}
                   className="flex w-full items-center justify-center gap-2 rounded-xl border-1.5 border-gold-600/50 bg-gold-100 px-6 py-3.5 text-base font-bold text-gold-950 transition-all hover:bg-gold-200 sm:w-auto"
                 >
                   <Heart className="h-5 w-5 fill-gold-600 text-gold-600" />
-                  <span>Dukung Pengembangan</span>
+                  <span>{heroContent.ctaSupportText || "Dukung Pengembang"}</span>
                 </Link>
               </div>
 
@@ -139,7 +159,7 @@ export default function HomePage() {
                   <div className="relative overflow-hidden rounded-xl border border-gold-accent/30 bg-forest-950">
                     {/* Actual Screenshot from Desktop App */}
                     <Image
-                      src="/images/screenshot_real_compact.png"
+                      src={heroContent.previewImage || "/images/screenshot_real_compact.png"}
                       alt="Tampilan Antarmuka Panel Utama KRONABEL"
                       width={945}
                       height={497}
@@ -464,26 +484,26 @@ export default function HomePage() {
       <section className="border-t border-forest-900/10 bg-gradient-to-br from-forest-900 via-forest-950 to-forest-dark py-16 text-center text-white sm:py-20">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-black tracking-tight sm:text-4xl lg:text-5xl">
-            Mulai Gunakan {SITE_CONFIG.brandName} Hari Ini
+            {ctaContent.title || `Mulai Gunakan ${SITE_CONFIG.brandName} Hari Ini`}
           </h2>
           <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-slate-300 sm:text-base">
-            Tingkatkan ketepatan jam pelajaran di sekolah Anda dengan aplikasi bel otomatis yang handal, elegan, dan mudah dikelola.
+            {ctaContent.description || "Tingkatkan ketepatan jam pelajaran di sekolah Anda dengan aplikasi bel otomatis yang handal, elegan, dan mudah dikelola."}
           </p>
 
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link
-              href="/unduh"
+              href={ctaContent.primaryButtonHref || "/unduh"}
               className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gold-500 px-8 py-4 text-base font-black text-forest-950 shadow-lg shadow-gold-500/20 transition-all hover:bg-gold-400 sm:w-auto"
             >
               <Download className="h-5 w-5" />
-              <span>Buka Halaman Unduh</span>
+              <span>{ctaContent.primaryButtonText || "Buka Halaman Unduh"}</span>
             </Link>
 
             <Link
-              href="/panduan"
+              href={ctaContent.secondaryButtonHref || "/panduan"}
               className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/10 px-8 py-4 text-base font-bold text-white transition-all hover:bg-white/20 sm:w-auto"
             >
-              <span>Pelajari Panduan</span>
+              <span>{ctaContent.secondaryButtonText || "Pelajari Panduan"}</span>
               <ArrowRight className="h-4 w-4" />
             </Link>
           </div>

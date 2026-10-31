@@ -60,9 +60,9 @@ export default function AdminMediaPage() {
       return;
     }
 
-    const allowedTypes = ["image/png", "image/jpeg", "image/jpg", "image/webp", "image/svg+xml", "image/x-icon"];
+    const allowedTypes = ["image/png", "image/jpeg", "image/jpg", "image/webp"];
     if (!allowedTypes.includes(file.type)) {
-      showToast("Format berkas harus gambar (PNG, JPG, WEBP, SVG, ICO).", "error");
+      showToast("Format berkas harus gambar (PNG, JPG, atau WebP).", "error");
       return;
     }
 
@@ -172,7 +172,7 @@ export default function AdminMediaPage() {
             <input
               type="file"
               ref={fileInputRef}
-              accept="image/png,image/jpeg,image/jpg,image/webp,image/svg+xml,image/x-icon"
+              accept="image/png,image/jpeg,image/jpg,image/webp"
               className="hidden"
               onChange={(e) => handleFileUpload(e.target.files)}
             />
@@ -215,7 +215,7 @@ export default function AdminMediaPage() {
             Klik atau seret gambar ke area ini untuk mengunggah
           </p>
           <p className="text-xs text-slate-500 mt-1">
-            Format yang didukung: PNG, JPG, WEBP, SVG, ICO (Maksimal 5 MB per berkas).
+            Format yang didukung: PNG, JPG, WebP (Maksimal 5 MB per berkas).
           </p>
         </div>
 

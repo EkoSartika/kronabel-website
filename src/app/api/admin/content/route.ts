@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 
 export async function GET(request: NextRequest) {
@@ -81,6 +82,13 @@ export async function POST(request: NextRequest) {
       status: validStatus,
       changed_by: user.id,
     });
+
+    // 3. Revalidasi cache halaman publik agar perubahan langsung aktif tanpa redeploy
+    try {
+      revalidatePath("/", "layout");
+    } catch {
+      // Abaikan jika dipanggil di luar konteks request cache
+    }
 
     return NextResponse.json({ success: true, data: updatedContent });
   } catch {

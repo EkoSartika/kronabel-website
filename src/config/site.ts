@@ -12,8 +12,6 @@ export const SITE_CONFIG = {
     "Kelola jadwal bel sekolah secara praktis melalui aplikasi Windows yang mudah digunakan. Gratis, tanpa biaya langganan, dan bekerja 100% offline.",
   targetOS: "Windows 10 & Windows 11 (64-bit)",
   author: "Pengembang KRONABEL",
-  brandDisclaimer:
-    "KRONABEL merupakan kandidat nama merek sementara untuk aplikasi Bel Sekolah Otomatis yang sedang dalam tahap verifikasi ketersediaan. Tidak ada klaim hak cipta terdaftar sebelum pemeriksaan selesai.",
 
   // Dukungan Pengembang (Saweria)
   donation: {
