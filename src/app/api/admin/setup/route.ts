@@ -41,32 +41,51 @@ export async function GET() {
     }
 
     // Uji koneksi tabel admin_users
-    const { count, error: countError } = await adminSupabase
+    const { count, error: countError, status: httpStatus, statusText } = await adminSupabase
       .from("admin_users")
       .select("*", { count: "exact", head: true });
 
     if (countError) {
-      const errMsg = countError.message || countError.details || countError.hint || "";
+      // Ekstrak semua properti error termasuk non-enumerable
+      const rawErrorProps: Record<string, unknown> = {};
+      try {
+        const errorRecord = countError as unknown as Record<string, unknown>;
+        for (const key of Object.getOwnPropertyNames(countError)) {
+          rawErrorProps[key] = errorRecord[key];
+        }
+      } catch {
+        rawErrorProps.fallback = String(countError);
+      }
+
+      const errMsg =
+        countError.message ||
+        countError.details ||
+        countError.hint ||
+        String(rawErrorProps.message || "") ||
+        "";
+
       const isTableNotFound =
         countError.code === "PGRST205" ||
         countError.code === "42P01" ||
         errMsg.toLowerCase().includes("does not exist") ||
         errMsg.toLowerCase().includes("not found");
       const isAuthError =
+        httpStatus === 401 ||
         countError.code === "PGRST301" ||
         errMsg.toLowerCase().includes("jwt") ||
         errMsg.toLowerCase().includes("api key") ||
-        errMsg.toLowerCase().includes("unauthorized");
+        errMsg.toLowerCase().includes("unauthorized") ||
+        statusText?.toLowerCase().includes("unauthorized");
 
       let errorCategory = "DATABASE_ERROR";
       let userGuidance = "Terjadi kesalahan saat memeriksa database.";
 
-      if (isTableNotFound) {
-        errorCategory = "TABLE_NOT_FOUND";
-        userGuidance = `Tabel public.admin_users tidak ditemukan pada project '${projectHost}'. Kemungkinan migration dijalankan di project Supabase yang berbeda dengan URL di Vercel, atau schema cache belum ter-reload.`;
-      } else if (isAuthError) {
+      if (isAuthError) {
         errorCategory = "INVALID_CREDENTIALS";
-        userGuidance = `Kunci SUPABASE_SERVICE_ROLE_KEY yang terpasang di Vercel tidak sah untuk project '${projectHost}'. Pastikan menyalin service_role secret key yang sesuai dari project tersebut.`;
+        userGuidance = `Kunci SUPABASE_SERVICE_ROLE_KEY di Vercel tidak sah (HTTP ${httpStatus} Unauthorized). Pastikan Anda menyalin 'service_role' secret key, BUKAN 'anon' public key atau password database.`;
+      } else if (isTableNotFound) {
+        errorCategory = "TABLE_NOT_FOUND";
+        userGuidance = `Tabel public.admin_users tidak ditemukan pada project '${projectHost}'. Pastikan migration SQL dijalankan di project Supabase ini.`;
       }
 
       return NextResponse.json(
@@ -75,12 +94,15 @@ export async function GET() {
           connected: false,
           projectHost,
           hasSetupSecret,
+          httpStatus,
+          statusText,
           errorCategory,
           userGuidance,
-          code: countError.code || null,
-          message: countError.message || null,
-          details: countError.details || null,
-          hint: countError.hint || null,
+          rawErrorProps,
+          code: countError.code || rawErrorProps.code || null,
+          message: countError.message || rawErrorProps.message || null,
+          details: countError.details || rawErrorProps.details || null,
+          hint: countError.hint || rawErrorProps.hint || null,
         },
         { status: 200 }
       );
