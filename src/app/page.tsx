@@ -480,10 +480,7 @@ export default function HomePage() {
       {/* ========================================================================= */}
       <section className="border-t border-forest-900/10 bg-gradient-to-br from-forest-900 via-forest-950 to-forest-dark py-16 text-center text-white sm:py-20">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-          <span className="rounded-full border border-gold-400/40 bg-gold-400/10 px-4 py-1.5 text-xs font-bold text-gold-300">
-            Gratis & Bekerja 100% Offline
-          </span>
-          <h2 className="mt-4 text-3xl font-black tracking-tight sm:text-4xl lg:text-5xl">
+          <h2 className="text-3xl font-black tracking-tight sm:text-4xl lg:text-5xl">
             Mulai Gunakan {SITE_CONFIG.brandName} Hari Ini
           </h2>
           <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-slate-300 sm:text-base">

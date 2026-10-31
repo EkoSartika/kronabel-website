@@ -12,15 +12,17 @@ export default function AboutPage() {
     <div className="py-12 sm:py-16">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center max-w-2xl mx-auto mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-100 text-emerald-900 text-xs font-semibold uppercase tracking-wider mb-4 border border-emerald-200">
-            <Info className="w-4 h-4 text-emerald-700" />
-            Tentang Proyek
-          </div>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight">
-            Mengenal <span className="text-emerald-800">{SITE_CONFIG.brandName}</span>
+        <div className="text-center max-w-3xl mx-auto mb-14">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight">
+            Mengenal{" "}
+            <span className="relative inline-block">
+              <span className="bg-gradient-to-r from-forest-950 via-emerald-800 to-forest-900 bg-clip-text text-transparent">
+                {SITE_CONFIG.brandName}
+              </span>
+              <span className="absolute -bottom-1.5 left-0 right-0 h-1 rounded-full bg-gradient-to-r from-emerald-600 via-gold-400 to-emerald-700"></span>
+            </span>
           </h1>
-          <p className="mt-4 text-base sm:text-lg text-slate-600 leading-relaxed">
+          <p className="mt-6 text-base sm:text-lg text-slate-600 leading-relaxed max-w-2xl mx-auto">
             Inisiatif perangkat lunak bel sekolah otomatis yang handal, elegan, dan didedikasikan sepenuhnya untuk pendidikan di Indonesia.
           </p>
         </div>

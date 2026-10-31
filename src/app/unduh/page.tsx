@@ -16,10 +16,6 @@ export default function DownloadPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-14">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-100 text-emerald-900 text-xs font-semibold uppercase tracking-wider mb-4 border border-emerald-200">
-            <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
-            Rilis Terbaru Terverifikasi
-          </div>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight">
             Unduh {SITE_CONFIG.brandName} <span className="text-emerald-800">v{release.latestVersion}</span>
           </h1>
@@ -27,11 +23,11 @@ export default function DownloadPage() {
             Gratis tanpa batasan durasi, tanpa iklan terselubung, dan berjalan langsung secara lokal (offline) di komputer Windows sekolah Anda.
           </p>
           <div className="mt-4 flex flex-wrap items-center justify-center gap-4 text-xs sm:text-sm text-slate-500 font-medium">
-            <span>📅 Rilis: {release.releaseDate}</span>
+            <span>Rilis: {release.releaseDate}</span>
             <span>•</span>
-            <span>💻 {release.architecture}</span>
+            <span>{release.architecture}</span>
             <span>•</span>
-            <span>⚡ {release.framework}</span>
+            <span>{release.framework}</span>
           </div>
         </div>
 

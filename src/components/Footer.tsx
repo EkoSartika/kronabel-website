@@ -12,18 +12,15 @@ export const Footer: React.FC = () => {
           {/* Kolom 1: Profil & Filosofi */}
           <div className="md:col-span-2 space-y-4">
             <BrandLogo size="md" />
-            <p className="max-w-md text-sm leading-relaxed text-slate-600">
-              {SITE_CONFIG.description}
-            </p>
 
             <div className="flex flex-wrap items-center gap-3 pt-2 text-xs font-semibold text-forest-900">
-              <span className="inline-flex items-center gap-1 rounded-md bg-forest-100/80 px-2.5 py-1 text-forest-800">
-                <CheckCircle2 className="h-3.5 w-3.5" /> 100% Gratis Digunakan
+              <span className="inline-flex items-center gap-1.5 rounded-md bg-forest-100/80 px-2.5 py-1 text-forest-800">
+                <CheckCircle2 className="h-3.5 w-3.5 text-forest-700" /> Sistem Bel Otomatis
               </span>
-              <span className="inline-flex items-center gap-1 rounded-md bg-forest-100/80 px-2.5 py-1 text-forest-800">
-                <Laptop className="h-3.5 w-3.5" /> Windows 10 & 11 (64-bit)
+              <span className="inline-flex items-center gap-1.5 rounded-md bg-forest-100/80 px-2.5 py-1 text-forest-800">
+                <Shield className="h-3.5 w-3.5 text-forest-700" /> Presisi &amp; Terjadwal
               </span>
-              <span className="inline-flex items-center gap-1 rounded-md bg-gold-100 px-2.5 py-1 text-gold-900">
+              <span className="inline-flex items-center gap-1.5 rounded-md bg-gold-100 px-2.5 py-1 text-gold-900">
                 <Heart className="h-3.5 w-3.5 fill-gold-600 text-gold-600" /> Dukungan Sukarela
               </span>
             </div>
