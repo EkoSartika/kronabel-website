@@ -140,10 +140,10 @@ export default function HomePage() {
                     {/* Actual Screenshot from Desktop App */}
                     <Image
                       src="/images/screenshot_real_compact.png"
-                      alt="Tampilan Antarmuka Panel Kompak KRONABEL"
-                      width={740}
-                      height={420}
-                      className="h-auto w-full object-cover shadow-inner"
+                      alt="Tampilan Antarmuka Panel Utama KRONABEL"
+                      width={945}
+                      height={497}
+                      className="h-auto w-full object-contain"
                       priority
                     />
                   </div>
