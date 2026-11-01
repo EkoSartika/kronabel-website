@@ -40,7 +40,7 @@ export function JsonLd() {
       "@type": "Organization",
       "name": SITE_CONFIG.brandName,
       "url": SITE_CONFIG.siteUrl,
-      "logo": `${SITE_CONFIG.siteUrl}/images/app_icon.png`,
+      "logo": `${SITE_CONFIG.siteUrl}/logo-kronabel.png`,
       "description":
         "Pengembang perangkat lunak bel sekolah otomatis Windows gratis dan mandiri untuk institusi pendidikan di Indonesia.",
     },
