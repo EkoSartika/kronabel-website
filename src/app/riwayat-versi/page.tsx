@@ -33,11 +33,56 @@ export const metadata: Metadata = {
 export default function ChangelogPage() {
   const versions = [
     {
-      version: "1.2.3",
+      version: "1.2.4",
       date: "2 November 2026",
       badge: "Rilis Terbaru (Stabil)",
       badgeColor: "bg-emerald-100 text-emerald-900 border-emerald-300",
       isLatest: true,
+      title: "Rebranding Identitas Resmi KRONABEL & Penyelarasan Ekosistem Windows",
+      summary:
+        "Penyelarasan menyeluruh identitas produk menjadi KRONABEL pada seluruh sistem operasi Windows (Windows Installed Apps, Add or Remove Programs, Start Menu, Desktop Shortcut, dan jendela aplikasi), pembaruan nama berkas biner KRONABEL.exe, pemeliharaan kompatibilitas upgrade in-place tanpa entri ganda, serta migrasi data pengguna otomatis tanpa kehilangan jadwal maupun audio.",
+      changes: [
+        {
+          category: "Rebranding Identitas Produk KRONABEL",
+          items: [
+            "Penyelarasan nama aplikasi pada daftar Windows Installed Apps dan Add or Remove Programs menjadi 'KRONABEL version 1.2.4' dengan keterangan 'Aplikasi Bel Otomatis Sekolah'.",
+            "Pembaruan shortcut Windows Start Menu dan Desktop Shortcut menjadi 'KRONABEL'.",
+            "Pembaruan jendela utama aplikasi, bilah navigasi, dan dialog Area Pengelola menjadi 'KRONABEL'.",
+            "Penyelarasan biner executable mandiri utama menjadi KRONABEL.exe dengan metadata Windows lengkap (ProductName: KRONABEL, FileDescription: KRONABEL — Aplikasi Bel Otomatis Sekolah).",
+          ],
+        },
+        {
+          category: "Kompatibilitas Upgrade & Preservasi Data (Zero Data Loss)",
+          items: [
+            "Mempertahankan AppId Inno Setup asli sehingga proses upgrade dari v1.2.3 atau versi lebih lama berjalan mulus menggantikan entri lama tanpa duplikasi instalasi.",
+            "Migrasi otomatis data persisten: database SQLite (jadwal, profil, riwayat, dan kata sandi), folder suara kustom, dan cadangan dari direktori lama secara transparan disalin ke direktori pengguna KRONABEL baru.",
+            "Penyelarasan registri autostart Windows (HKCU Run) ke entri KRONABEL dengan pembersihan otomatis registri startup lama.",
+          ],
+        },
+        {
+          category: "Pemeliharaan Fitur Audio Eksternal & Stabilitas",
+          items: [
+            "Mempertahankan 100% kapabilitas perutean audio jack 3,5 mm speaker eksternal teruji fisik dari v1.2.3.",
+            "Pilihan perangkat output audio otomatis dan manual, pemindai dinamis QMediaDevices, Segarkan Perangkat, dan Tes Suara tetap aktif optimal.",
+            "143 pengujian otomatis terverifikasi 100% PASS pada lingkungan Windows 10 & 11 64-bit.",
+          ],
+        },
+        {
+          category: "Paket Distribusi Resmi v1.2.4",
+          items: [
+            "Paket Setup Installer: KRONABEL_Setup_v1.2.4.exe (45.63 MB, SHA-256: 38e91e93aef130fcff2bcf589379b92ab15e600d5694b2a14eebdac322b9abdf).",
+            "Paket Portable ZIP: KRONABEL_Portable_v1.2.4.zip (79.80 MB, SHA-256: 7772a0c022dc0b4bd7626aef87e047739502450ea05e8c5ba6ae477fbb041a7c).",
+            "Distribusi resmi mandiri bebas biaya lisensi untuk sekolah-sekolah di seluruh Indonesia.",
+          ],
+        },
+      ],
+    },
+    {
+      version: "1.2.3",
+      date: "2 November 2026",
+      badge: "Stabil",
+      badgeColor: "bg-slate-100 text-slate-800 border-slate-300",
+      isLatest: false,
       title: "Pembaruan Perutean Audio Output & Dukungan Speaker Eksternal",
       summary:
         "Pembaruan kritis pada subsistem audio yang mengatasi perutean perangkat output saat kabel speaker eksternal (jack 3,5 mm) dipasang, menambahkan deteksi dinamis QMediaDevices, serta menyediakan panel pengaturan perangkat audio dan tombol tes suara fisik.",

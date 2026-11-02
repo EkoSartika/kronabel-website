@@ -91,7 +91,7 @@ export default async function HomePage() {
     },
     {
       q: "Bagaimana cara menghubungkan aplikasi dengan speaker lorong sekolah?",
-      a: "Cukup hubungkan lubang output audio (jack 3,5 mm) komputer ke input audio amplifier atau sound system lorong sekolah. KRONABEL v1.2.3 secara dinamis mendeteksi sambungan jack 3,5 mm dan mengalirkan suara bel langsung ke speaker eksternal tanpa perlu menutup atau merestart aplikasi. Anda juga dapat memilih perangkat output secara manual, menyegarkan daftar perangkat, dan memastikannya dengan tombol Tes Suara di menu Pengaturan.",
+      a: "Cukup hubungkan lubang output audio (jack 3,5 mm) komputer ke input audio amplifier atau sound system lorong sekolah. KRONABEL secara dinamis mendeteksi sambungan jack 3,5 mm dan mengalirkan suara bel langsung ke speaker eksternal tanpa perlu menutup atau merestart aplikasi. Anda juga dapat memilih perangkat output secara manual, menyegarkan daftar perangkat, dan memastikannya dengan tombol Tes Suara di menu Pengaturan.",
     },
     {
       q: "Bagaimana cara memberikan dukungan kepada pengembang?",
@@ -311,7 +311,7 @@ export default async function HomePage() {
                   </div>
                   <div>
                     <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full border border-emerald-300">
-                      Pembaruan Unggulan v1.2.3 • Teruji Fisik
+                      Pembaruan Unggulan v1.2.4 • Teruji Fisik
                     </span>
                     <h3 className="text-lg font-bold text-forest-950 mt-1">Dukungan Speaker Eksternal & Perutean Audio</h3>
                   </div>

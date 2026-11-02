@@ -34,7 +34,7 @@ const PAGES: PageMeta[] = [
     slug: "riwayat-versi",
     tabKey: "riwayat",
     route: "/riwayat-versi",
-    description: "Catatan rilis dari v1.0.0 hingga v1.2.3, mencatat fitur baru, peningkatan performa, dan perbaikan bug.",
+    description: "Catatan rilis dari v1.0.0 hingga v1.2.4, mencatat fitur baru, peningkatan performa, dan perbaikan bug.",
     type: "Dokumentasi",
     status: "Aktif (CMS Terintegrasi)",
   },
