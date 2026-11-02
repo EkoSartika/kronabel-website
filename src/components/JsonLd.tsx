@@ -13,7 +13,7 @@ export function JsonLd() {
       "applicationCategory": "EducationalApplication",
       "applicationSubCategory": "School Bell Scheduler",
       "softwareVersion": SITE_CONFIG.release.latestVersion,
-      "datePublished": "2026-10-29",
+      "datePublished": "2026-11-02",
       "inLanguage": "id-ID",
       "offers": {
         "@type": "Offer",

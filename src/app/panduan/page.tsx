@@ -4,6 +4,7 @@ import {
   AlertCircle,
   CheckCircle2,
   ChevronRight,
+  Volume2,
 } from "lucide-react";
 import { SITE_CONFIG } from "@/config/site";
 
@@ -110,7 +111,7 @@ export default function GuidePage() {
                 <div>
                   <h3 className="text-base font-bold text-slate-900 mb-2">Pilihan A: Menggunakan Setup Installer (.exe)</h3>
                   <ol className="list-decimal list-inside space-y-2 text-slate-600 pl-1">
-                    <li>Unduh file <code className="bg-slate-100 px-1.5 py-0.5 rounded text-slate-800 font-mono text-xs">BelOtomatisSekolah_Setup_v1.2.2.exe</code>.</li>
+                    <li>Unduh file <code className="bg-slate-100 px-1.5 py-0.5 rounded text-slate-800 font-mono text-xs">BelOtomatisSekolah_Setup_v1.2.3.exe</code>.</li>
                     <li>Klik dua kali pada file tersebut. Jika muncul layar biru Windows Defender SmartScreen, klik <strong>More info</strong> lalu klik <strong>Run anyway</strong>.</li>
                     <li>Ikuti wizard instalasi Inno Setup. Anda dapat memilih opsi untuk membuat ikon di Desktop.</li>
                     <li>Klik <strong>Finish</strong> dan aplikasi akan langsung berjalan.</li>
@@ -120,7 +121,7 @@ export default function GuidePage() {
                 <div>
                   <h3 className="text-base font-bold text-slate-900 mb-2">Pilihan B: Menggunakan Portable ZIP (.zip)</h3>
                   <ol className="list-decimal list-inside space-y-2 text-slate-600 pl-1">
-                    <li>Unduh file <code className="bg-slate-100 px-1.5 py-0.5 rounded text-slate-800 font-mono text-xs">BelOtomatisSekolah_Portable_v1.2.2.zip</code>.</li>
+                    <li>Unduh file <code className="bg-slate-100 px-1.5 py-0.5 rounded text-slate-800 font-mono text-xs">BelOtomatisSekolah_Portable_v1.2.3.zip</code>.</li>
                     <li>Klik kanan file ZIP &rarr; <strong>Extract All...</strong> ke direktori yang Anda inginkan (misalnya <code className="bg-slate-100 px-1.5 py-0.5 rounded text-slate-800 font-mono text-xs">D:\BelSekolah</code> atau di USB Flashdisk).</li>
                     <li>Buka folder hasil ekstrak dan jalankan <code className="bg-slate-100 px-1.5 py-0.5 rounded text-slate-800 font-mono text-xs">BelOtomatisSekolah.exe</code>.</li>
                   </ol>
@@ -246,6 +247,21 @@ export default function GuidePage() {
                     Di baris bawah panel bel manual terdapat tombol khusus TES 1 sampai TES 5. Gunakan tombol ini untuk menguji volume amplifier sekolah sebelum jam masuk tiba, tanpa harus mengubah jadwal yang sudah ada.
                   </p>
                 </div>
+
+                <div className="bg-emerald-50/70 p-5 rounded-2xl border border-emerald-200 mt-4 space-y-2">
+                  <h3 className="font-bold text-emerald-950 text-sm flex items-center gap-2">
+                    <Volume2 className="w-4 h-4 text-emerald-700" />
+                    Pengaturan Perangkat Output Audio (Speaker Eksternal & Internal v1.2.3):
+                  </h3>
+                  <p className="text-xs text-slate-700 leading-relaxed">
+                    Mulai versi v1.2.3, KRONABEL dilengkapi sistem perutean audio dinamis yang mendukung speaker eksternal (jack audio 3,5 mm) dan speaker internal:
+                  </p>
+                  <ul className="list-disc list-inside space-y-1 text-xs text-slate-600 pl-1">
+                    <li><strong>Mode Otomatis (Default):</strong> Suara bel otomatis dialirkan ke speaker eksternal begitu kabel jack 3,5 mm dicolokkan ke komputer, tanpa perlu menutup aplikasi.</li>
+                    <li><strong>Pilihan Perangkat Manual:</strong> Operator dapat mengunci output ke perangkat speaker tertentu melalui menu Setting. Jika kabel dicabut, sistem jatuh ke default Windows sementara agar bel tidak bisu.</li>
+                    <li><strong>Tombol Segarkan Perangkat & Tes Suara:</strong> Tombol <em>Segarkan Perangkat</em> memindai ulang perangkat yang baru tersambung, dan tombol <em>Tes Suara</em> memutar audio nyata langsung ke speaker target untuk memastikan audio keluar dengan lantang dan jernih.</li>
+                  </ul>
+                </div>
               </div>
             </section>
 
@@ -262,7 +278,7 @@ export default function GuidePage() {
                 </p>
 
                 <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3">
-                  <h3 className="font-bold text-slate-900 text-sm">Aturan Sistem Audio Terpusat (v1.2.1 / v1.2.2):</h3>
+                  <h3 className="font-bold text-slate-900 text-sm">Aturan Sistem Audio Terpusat (v1.2.1 / v1.2.2 / v1.2.3):</h3>
                   <div className="space-y-2 text-xs text-slate-600">
                     <div className="flex items-start gap-2">
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 mt-1.5 shrink-0"></span>
@@ -351,8 +367,9 @@ export default function GuidePage() {
                     Audio bel tidak terdengar sama sekali
                   </h3>
                   <ul className="list-disc list-inside space-y-1 text-xs text-slate-600 pl-2">
-                    <li>Periksa kabel jack audio 3.5mm dari port audio komputer menuju amplifier pengeras suara sekolah.</li>
+                    <li>Periksa kabel jack audio 3,5 mm dari port audio komputer menuju amplifier pengeras suara sekolah.</li>
                     <li>Pastikan amplifier dalam keadaan menyala dan volume input tidak berada pada posisi nol atau mute.</li>
+                    <li>Buka menu <strong>Setting &rarr; Audio & Pemutaran Bel</strong> di KRONABEL: pastikan perangkat output terpilih (Otomatis atau nama speaker eksternal Anda), klik <strong>Segarkan Perangkat</strong>, lalu tekan tombol <strong>Tes Suara</strong>.</li>
                     <li>Periksa ikon speaker di pojok kanan bawah Windows taskbar: pastikan volume master Windows minimal 80%.</li>
                     <li>Uji dengan memencet salah satu tombol <strong>TES 1</strong> pada panel aplikasi.</li>
                   </ul>

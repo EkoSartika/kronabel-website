@@ -26,13 +26,13 @@ import {
 
 export const metadata: Metadata = {
   title: `${SITE_CONFIG.brandName} — Aplikasi Bel Sekolah Otomatis Windows (Gratis & Offline)`,
-  description: `Download ${SITE_CONFIG.brandName}, software bel sekolah otomatis gratis untuk PC Windows 10 & 11 (64-bit). Bekerja 100% offline, presisi tinggi, mendukung audio MP3 & WAV, multi-profil jadwal, dan tanpa biaya langganan.`,
+  description: `Download ${SITE_CONFIG.brandName} v${SITE_CONFIG.release.latestVersion}, software bel sekolah otomatis gratis untuk PC Windows 10 & 11 (64-bit). Bekerja 100% offline, mendukung speaker internal & eksternal jack 3,5 mm, deteksi audio dinamis, multi-profil, dan tanpa biaya langganan.`,
   alternates: {
     canonical: SITE_CONFIG.siteUrl,
   },
   openGraph: {
     title: `${SITE_CONFIG.brandName} — Aplikasi Bel Sekolah Otomatis Windows`,
-    description: `Download ${SITE_CONFIG.brandName}, software bel sekolah otomatis gratis untuk Windows 10 & 11. Bekerja 100% offline dengan audio MP3/WAV dan multi-profil.`,
+    description: `Download ${SITE_CONFIG.brandName} v${SITE_CONFIG.release.latestVersion} gratis untuk Windows 10 & 11. Bekerja 100% offline dengan dukungan speaker eksternal jack 3,5 mm, audio MP3/WAV, dan multi-profil.`,
     url: SITE_CONFIG.siteUrl,
     images: [
       {
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: `${SITE_CONFIG.brandName} — Aplikasi Bel Sekolah Otomatis Windows`,
-    description: `Software bel sekolah otomatis gratis untuk Windows 10 & 11 (64-bit). 100% offline, praktis, dan tanpa biaya langganan.`,
+    description: `Software bel sekolah otomatis gratis untuk Windows 10 & 11 (64-bit). Mendukung speaker eksternal jack 3,5 mm, 100% offline, dan tanpa biaya langganan.`,
     images: ["/images/screenshot_real_compact.png"],
   },
 };
@@ -91,7 +91,7 @@ export default async function HomePage() {
     },
     {
       q: "Bagaimana cara menghubungkan aplikasi dengan speaker lorong sekolah?",
-      a: "Cukup hubungkan lubang output audio (jack 3.5mm atau USB soundcard) komputer ke input audio amplifier / sound system lorong sekolah. Pastikan volume Windows dan amplifier berada pada tingkat yang diinginkan.",
+      a: "Cukup hubungkan lubang output audio (jack 3,5 mm) komputer ke input audio amplifier atau sound system lorong sekolah. KRONABEL v1.2.3 secara dinamis mendeteksi sambungan jack 3,5 mm dan mengalirkan suara bel langsung ke speaker eksternal tanpa perlu menutup atau merestart aplikasi. Anda juga dapat memilih perangkat output secara manual, menyegarkan daftar perangkat, dan memastikannya dengan tombol Tes Suara di menu Pengaturan.",
     },
     {
       q: "Bagaimana cara memberikan dukungan kepada pengembang?",
@@ -156,6 +156,10 @@ export default async function HomePage() {
                 <div className="flex items-center gap-1.5">
                   <CheckCircle2 className="h-4 w-4 text-forest-600" />
                   <span>100% Gratis & Mandiri</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <CheckCircle2 className="h-4 w-4 text-forest-600" />
+                  <span>Speaker Internal & Eksternal 3,5 mm</span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <CheckCircle2 className="h-4 w-4 text-forest-600" />
@@ -287,17 +291,41 @@ export default async function HomePage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h2 className="text-xs font-extrabold uppercase tracking-wider text-forest-800">
-              Fitur Terverifikasi v1.2.2
+              Fitur Terverifikasi v{SITE_CONFIG.release.latestVersion}
             </h2>
             <p className="mt-2 text-3xl font-black tracking-tight text-forest-950 sm:text-4xl">
               Fungsionalitas Lengkap Tanpa Rekayasa
             </p>
             <p className="mx-auto mt-3 max-w-2xl text-sm text-slate-600">
-              Setiap fitur di bawah ini telah diuji dan tersedia secara nyata pada rilis KRONABEL desktop terbaru.
+              Setiap fitur di bawah ini telah diuji secara fisik dan tersedia secara nyata pada rilis KRONABEL desktop terbaru.
             </p>
           </div>
 
           <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {/* Feature 0 - Dukungan Speaker Eksternal (Highlight v1.2.3) */}
+            <div className="rounded-2xl border-2 border-emerald-600/30 bg-emerald-50/40 p-6 shadow-soft transition-all hover:border-emerald-600 hover:shadow-card md:col-span-2 lg:col-span-3">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-emerald-200/60">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-800 text-amber-300 shadow">
+                    <Volume2 className="h-6 w-6" />
+                  </div>
+                  <div>
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full border border-emerald-300">
+                      Pembaruan Unggulan v1.2.3 • Teruji Fisik
+                    </span>
+                    <h3 className="text-lg font-bold text-forest-950 mt-1">Dukungan Speaker Eksternal & Perutean Audio</h3>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 text-xs font-semibold text-emerald-800">
+                  <CheckCircle2 className="h-4 w-4 text-emerald-600" />
+                  <span>Kompatibel Jack 3,5 mm Windows 10 & 11</span>
+                </div>
+              </div>
+              <p className="mt-3 text-sm leading-relaxed text-slate-700">
+                KRONABEL kini dapat mengalirkan suara bel ke speaker eksternal melalui jack audio 3,5 mm maupun speaker internal. Dilengkapi deteksi otomatis saat kabel dipasang, pemilihan perangkat output secara otomatis maupun manual, tombol <strong>Segarkan Perangkat</strong>, dan fitur <strong>Tes Suara</strong> fisik untuk memastikan suara bel terdengar lantang dan jelas ke lorong sekolah sebelum jam pelajaran dimulai.
+              </p>
+            </div>
+
             {/* Feature 1 */}
             <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft">
               <div className="flex items-center gap-3">

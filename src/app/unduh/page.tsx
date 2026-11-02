@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Download, CheckCircle2, FileArchive, Laptop, HelpCircle, ExternalLink } from "lucide-react";
+import { Download, CheckCircle2, FileArchive, Laptop, HelpCircle, ExternalLink, ShieldCheck } from "lucide-react";
 import { SITE_CONFIG } from "@/config/site";
+import { CopyHashButton, PowerShellVerifyBox } from "@/components/DownloadHelper";
 
 export const metadata: Metadata = {
   title: `Download Aplikasi Bel Sekolah Otomatis Windows - ${SITE_CONFIG.brandName}`,
@@ -132,6 +133,13 @@ export default function DownloadPage() {
                   <p className="mt-2.5 text-center text-xs text-slate-500 font-medium">
                     Pilihan Utama &bull; Versi v{release.latestVersion} ({release.installer.size}) &bull; Windows 10 & 11 (64-bit)
                   </p>
+                  <div className="mt-4 pt-3 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+                    <div className="text-slate-500 font-mono text-[11px] truncate" title={release.installer.sha256}>
+                      <span className="font-semibold text-slate-700">SHA-256: </span>
+                      <span className="text-slate-600">{release.installer.sha256.substring(0, 12)}...{release.installer.sha256.substring(release.installer.sha256.length - 8)}</span>
+                    </div>
+                    <CopyHashButton hash={release.installer.sha256} label="Salin Hash" />
+                  </div>
                 </>
               ) : (
                 <div className="space-y-2">
@@ -206,6 +214,13 @@ export default function DownloadPage() {
                   <p className="mt-2.5 text-center text-xs text-slate-500 font-medium">
                     Pilihan Alternatif &bull; Versi v{release.latestVersion} ({release.portable.size}) &bull; Windows 10 & 11 (64-bit)
                   </p>
+                  <div className="mt-4 pt-3 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+                    <div className="text-slate-500 font-mono text-[11px] truncate" title={release.portable.sha256}>
+                      <span className="font-semibold text-slate-700">SHA-256: </span>
+                      <span className="text-slate-600">{release.portable.sha256.substring(0, 12)}...{release.portable.sha256.substring(release.portable.sha256.length - 8)}</span>
+                    </div>
+                    <CopyHashButton hash={release.portable.sha256} label="Salin Hash" />
+                  </div>
                 </>
               ) : (
                 <div className="space-y-2">
@@ -258,8 +273,8 @@ export default function DownloadPage() {
 
             <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200">
               <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider block mb-1">Keluaran Suara</span>
-              <p className="text-base font-bold text-slate-900">Sound Card & Speaker</p>
-              <p className="text-xs text-slate-600 mt-1">Terhubung ke sistem audio/amplifier/pengeras suara sekolah.</p>
+              <p className="text-base font-bold text-slate-900">Internal & Eksternal 3,5 mm</p>
+              <p className="text-xs text-slate-600 mt-1">Dukungan speaker eksternal via jack 3,5 mm terkonfirmasi uji fisik. Terhubung ke amplifier sekolah.</p>
             </div>
           </div>
         </div>

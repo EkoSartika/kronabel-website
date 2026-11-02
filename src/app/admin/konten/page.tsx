@@ -42,7 +42,7 @@ export default function AdminContentPage() {
     heading: SITE_CONFIG.brandName,
     tagline: `“${SITE_CONFIG.tagline}”`,
     description: SITE_CONFIG.description,
-    ctaDownloadText: "Unduh Gratis (v1.2.2)",
+    ctaDownloadText: "Unduh Gratis (v1.2.3)",
     ctaSupportText: "Dukung Pengembang",
     previewImage: "/images/screenshot_real_compact.png",
     status: "published" as "published" | "draft",

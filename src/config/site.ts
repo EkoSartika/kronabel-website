@@ -24,29 +24,29 @@ export const SITE_CONFIG = {
 
   // Konfigurasi Rilis Resmi (Distribusi via GitHub Releases)
   release: {
-    latestVersion: "1.2.2",
-    releaseDate: "29 Oktober 2026",
+    latestVersion: "1.2.3",
+    releaseDate: "2 November 2026",
     framework: "Python 3.11.9 + PySide6 (Qt 6.12 Native)",
     architecture: "Windows x64 (64-bit)",
-    githubReleaseUrl: "https://github.com/EkoSartika/kronabel/releases/tag/v1.2.2",
+    githubReleaseUrl: "https://github.com/EkoSartika/kronabel/releases/tag/v1.2.3",
     repositoryUrl: "https://github.com/EkoSartika/kronabel",
 
     // Paket Installer Windows (Pilihan Utama)
     installer: {
-      filename: "BelOtomatisSekolah_Setup_v1.2.2.exe",
+      filename: "BelOtomatisSekolah_Setup_v1.2.3.exe",
       size: "45.63 MB",
-      sha256: "c1a6275c94533f54b8fca069de453a34b2c10a3aedb8f63450acbeda4dc72ae0",
+      sha256: "5e66fa7ed82894a7a0bcb6f0ca5d0531d2bb9d5fddd337fdbc01cd1f4bf86603",
       downloadUrl:
-        "https://github.com/EkoSartika/kronabel/releases/download/v1.2.2/BelOtomatisSekolah_Setup_v1.2.2.exe",
+        "https://github.com/EkoSartika/kronabel/releases/download/v1.2.3/BelOtomatisSekolah_Setup_v1.2.3.exe",
     },
 
     // Paket Portable ZIP (Tanpa Instalasi)
     portable: {
-      filename: "BelOtomatisSekolah_Portable_v1.2.2.zip",
-      size: "79.80 MB",
-      sha256: "a8f693c6ab2dd5c28a55c05231758be749050b2aae9c8ccd221761868d0f8004",
+      filename: "BelOtomatisSekolah_Portable_v1.2.3.zip",
+      size: "79.81 MB",
+      sha256: "bb6b0d925fc860f25e5407619d029a854a2e2671f726b7d0747f4c50dd76c0ba",
       downloadUrl:
-        "https://github.com/EkoSartika/kronabel/releases/download/v1.2.2/BelOtomatisSekolah_Portable_v1.2.2.zip",
+        "https://github.com/EkoSartika/kronabel/releases/download/v1.2.3/BelOtomatisSekolah_Portable_v1.2.3.zip",
     },
   },
 

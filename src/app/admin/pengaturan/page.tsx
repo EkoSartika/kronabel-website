@@ -20,10 +20,10 @@ const DEFAULT_SETTINGS: SiteSettings = {
   description: "Aplikasi Bel Sekolah Otomatis Windows untuk manajemen jadwal pelajaran sekolah yang handal, presisi, dan bekerja 100% offline.",
   productionUrl: "https://kronabel.vercel.app",
   saweriaUrl: "https://saweria.co/sartikamuhammadeko",
-  latestVersion: "v1.2.2",
-  releaseDate: "29 Oktober 2026",
-  installerDownloadUrl: "https://github.com/EkoSartika/kronabel-website/releases/download/v1.2.2/BelOtomatisSekolah_Setup_v1.2.2.exe",
-  portableDownloadUrl: "https://github.com/EkoSartika/kronabel-website/releases/download/v1.2.2/BelOtomatisSekolah_Portable_v1.2.2.zip",
+  latestVersion: "v1.2.3",
+  releaseDate: "2 November 2026",
+  installerDownloadUrl: "https://github.com/EkoSartika/kronabel/releases/download/v1.2.3/BelOtomatisSekolah_Setup_v1.2.3.exe",
+  portableDownloadUrl: "https://github.com/EkoSartika/kronabel/releases/download/v1.2.3/BelOtomatisSekolah_Portable_v1.2.3.zip",
 };
 
 export default function AdminSettingsPage() {

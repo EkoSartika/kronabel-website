@@ -5,7 +5,7 @@ import { SITE_CONFIG } from "@/config/site";
 
 export const metadata: Metadata = {
   title: `Riwayat Versi & Pembaruan Aplikasi Bel Sekolah - ${SITE_CONFIG.brandName}`,
-  description: `Catatan rilis dan riwayat pembaruan resmi ${SITE_CONFIG.brandName} (${SITE_CONFIG.brandSubtitle}) versi v1.2.2. Peningkatan timer scheduler, audio controller, dan stabilitas bel sekolah otomatis Windows.`,
+  description: `Catatan rilis dan riwayat pembaruan resmi ${SITE_CONFIG.brandName} (${SITE_CONFIG.brandSubtitle}) versi v${SITE_CONFIG.release.latestVersion}. Dukungan speaker eksternal jack 3,5 mm terkonfirmasi pengujian fisik, perutean audio dinamis, dan stabilitas bel sekolah otomatis Windows.`,
   alternates: {
     canonical: `${SITE_CONFIG.siteUrl}/riwayat-versi`,
   },
@@ -33,11 +33,58 @@ export const metadata: Metadata = {
 export default function ChangelogPage() {
   const versions = [
     {
-      version: "1.2.2",
-      date: "29 Oktober 2026",
+      version: "1.2.3",
+      date: "2 November 2026",
       badge: "Rilis Terbaru (Stabil)",
       badgeColor: "bg-emerald-100 text-emerald-900 border-emerald-300",
       isLatest: true,
+      title: "Pembaruan Perutean Audio Output & Dukungan Speaker Eksternal",
+      summary:
+        "Pembaruan kritis pada subsistem audio yang mengatasi perutean perangkat output saat kabel speaker eksternal (jack 3,5 mm) dipasang, menambahkan deteksi dinamis QMediaDevices, serta menyediakan panel pengaturan perangkat audio dan tombol tes suara fisik.",
+      changes: [
+        {
+          category: "Perutean Audio Dinamis & Jack Detection",
+          items: [
+            "Perbaikan pengalihan output audio Windows: mengatasi masalah audio bel yang sebelumnya tidak teralihkan saat jack dipasang.",
+            "Deteksi perubahan perangkat audio saat aplikasi berjalan melalui integrasi sinyal audioOutputsChanged (QMediaDevices) tanpa perlu menutup aplikasi.",
+            "Dukungan pemilihan speaker eksternal melalui jack 3,5 mm dengan pengalihan otomatis maupun manual.",
+            "Sinkronisasi otomatis QAudioOutput sebelum setiap pemutaran bel, menjamin suara mengalir tepat ke speaker eksternal aktif.",
+            "Fallback cerdas ke output default Windows apabila perangkat audio manual yang dipilih terputus dari komputer.",
+          ],
+        },
+        {
+          category: "Antarmuka Pengaturan Audio Baru",
+          items: [
+            "Pengaturan output audio otomatis (mengikuti default Windows) dan manual.",
+            "Dropdown pilihan perangkat output audio yang terdeteksi pada sistem Windows.",
+            "Tombol 'Segarkan Perangkat' untuk memindai ulang perangkat audio fisik secara instan.",
+            "Tombol 'Tes Suara' yang benar-benar memutar suara bel ke perangkat output yang sedang dipilih.",
+          ],
+        },
+        {
+          category: "Stabilitas & Pengujian Fisik (Terkonfirmasi Nyata)",
+          items: [
+            "Pengujian fisik speaker eksternal berhasil: dikonfirmasi secara langsung menggunakan kabel jack audio 3,5 mm bahwa suara bel berbunyi jernih dan lantang ke pengeras suara luar.",
+            "Penyempurnaan stabilitas pemutaran audio: mempertahankan arsitektur Single Active Audio Controller v1.2.1 dan pencegahan bentrokan audio ganda.",
+            "143 pengujian otomatis terverifikasi 100% PASS pada lingkungan Windows 10 & 11 64-bit.",
+          ],
+        },
+        {
+          category: "Integritas & Distribusi Rilis",
+          items: [
+            "Paket Setup Installer v1.2.3 (45.63 MB, SHA-256: 5e66fa7ed82894a7a0bcb6f0ca5d0531d2bb9d5fddd337fdbc01cd1f4bf86603).",
+            "Paket Portable ZIP v1.2.3 (79.81 MB, SHA-256: bb6b0d925fc860f25e5407619d029a854a2e2671f726b7d0747f4c50dd76c0ba).",
+            "Distribusi resmi mandiri bebas biaya langganan untuk sekolah-sekolah di Indonesia.",
+          ],
+        },
+      ],
+    },
+    {
+      version: "1.2.2",
+      date: "29 Oktober 2026",
+      badge: "Stabil",
+      badgeColor: "bg-slate-100 text-slate-800 border-slate-300",
+      isLatest: false,
       title: "Penyempurnaan Operasional & Notifikasi Jadwal Terlewat",
       summary:
         "Rilis pemeliharaan dan stabilitas yang memperkuat mekanisme notifikasi jadwal otomatis yang terlewat (missed), sinkronisasi status pemutaran audio, serta pembersihan tata letak visual antarmuka.",
