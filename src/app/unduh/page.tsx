@@ -5,27 +5,27 @@ import { SITE_CONFIG } from "@/config/site";
 import { CopyHashButton, PowerShellVerifyBox } from "@/components/DownloadHelper";
 
 export const metadata: Metadata = {
-  title: `Download Aplikasi Bel Sekolah Otomatis Windows - ${SITE_CONFIG.brandName}`,
-  description: `Download aplikasi bel sekolah otomatis gratis ${SITE_CONFIG.brandName} v${SITE_CONFIG.release.latestVersion} untuk Windows 10 & 11 (64-bit). Tersedia paket Installer Setup dan Portable ZIP siap pakai 100% offline tanpa biaya langganan.`,
+  title: `Download Aplikasi Bel Sekolah Otomatis Windows - ${SITE_CONFIG.appName}`,
+  description: `Download aplikasi bel sekolah otomatis gratis ${SITE_CONFIG.appName} v${SITE_CONFIG.release.latestVersion} untuk Windows 10 & 11 (64-bit). Tersedia paket Installer Setup dan Portable ZIP siap pakai 100% offline tanpa biaya langganan.`,
   alternates: {
     canonical: `${SITE_CONFIG.siteUrl}/unduh`,
   },
   openGraph: {
-    title: `Download Aplikasi Bel Sekolah Otomatis Windows - ${SITE_CONFIG.brandName}`,
-    description: `Download ${SITE_CONFIG.brandName} v${SITE_CONFIG.release.latestVersion} gratis untuk Windows 10 & 11 (64-bit). Tersedia Installer dan Portable ZIP offline.`,
+    title: `Download Aplikasi Bel Sekolah Otomatis Windows - ${SITE_CONFIG.appName}`,
+    description: `Download ${SITE_CONFIG.appName} v${SITE_CONFIG.release.latestVersion} gratis untuk Windows 10 & 11 (64-bit). Tersedia Installer dan Portable ZIP offline.`,
     url: `${SITE_CONFIG.siteUrl}/unduh`,
     images: [
       {
         url: "/images/screenshot_real_compact.png",
         width: 1280,
         height: 720,
-        alt: `Download ${SITE_CONFIG.brandName} Aplikasi Bel Sekolah Otomatis`,
+        alt: `Download ${SITE_CONFIG.appName} Aplikasi Bel Sekolah Otomatis`,
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: `Download Aplikasi Bel Sekolah Otomatis - ${SITE_CONFIG.brandName}`,
+    title: `Download Aplikasi Bel Sekolah Otomatis - ${SITE_CONFIG.appName}`,
     description: `Download software bel sekolah gratis untuk Windows 10 & 11 (64-bit). 100% offline dan tanpa lisensi berbayar.`,
     images: ["/images/screenshot_real_compact.png"],
   },
@@ -40,7 +40,7 @@ export default function DownloadPage() {
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-14">
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight">
-            Unduh {SITE_CONFIG.brandName} <span className="text-emerald-800">v{release.latestVersion}</span>
+            Unduh {SITE_CONFIG.appName} <span className="text-emerald-800">v{release.latestVersion}</span>
           </h1>
           <p className="mt-4 text-base sm:text-lg text-slate-600 leading-relaxed">
             Gratis tanpa batasan durasi, tanpa iklan terselubung, dan berjalan langsung secara lokal (offline) di komputer Windows sekolah Anda.

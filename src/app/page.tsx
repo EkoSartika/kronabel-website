@@ -25,14 +25,14 @@ import {
 } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: `${SITE_CONFIG.brandName} — Aplikasi Bel Sekolah Otomatis Windows (Gratis & Offline)`,
-  description: `Download ${SITE_CONFIG.brandName} v${SITE_CONFIG.release.latestVersion}, software bel sekolah otomatis gratis untuk PC Windows 10 & 11 (64-bit). Bekerja 100% offline, mendukung speaker internal & eksternal jack 3,5 mm, deteksi audio dinamis, multi-profil, dan tanpa biaya langganan.`,
+  title: `${SITE_CONFIG.appName} — Aplikasi Bel Sekolah Otomatis Windows (Gratis & Offline)`,
+  description: `Download ${SITE_CONFIG.appName} v${SITE_CONFIG.release.latestVersion}, software bel sekolah otomatis gratis untuk PC Windows 10 & 11 (64-bit). Bekerja 100% offline, mendukung speaker internal & eksternal jack 3,5 mm, deteksi audio dinamis, multi-profil, dan tanpa biaya langganan.`,
   alternates: {
     canonical: SITE_CONFIG.siteUrl,
   },
   openGraph: {
-    title: `${SITE_CONFIG.brandName} — Aplikasi Bel Sekolah Otomatis Windows`,
-    description: `Download ${SITE_CONFIG.brandName} v${SITE_CONFIG.release.latestVersion} gratis untuk Windows 10 & 11. Bekerja 100% offline dengan dukungan speaker eksternal jack 3,5 mm, audio MP3/WAV, dan multi-profil.`,
+    title: `${SITE_CONFIG.appName} — Aplikasi Bel Sekolah Otomatis Windows`,
+    description: `Download ${SITE_CONFIG.appName} v${SITE_CONFIG.release.latestVersion} gratis untuk Windows 10 & 11. Bekerja 100% offline dengan dukungan speaker eksternal jack 3,5 mm, audio MP3/WAV, dan multi-profil.`,
     url: SITE_CONFIG.siteUrl,
     images: [
       {
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: `${SITE_CONFIG.brandName} — Aplikasi Bel Sekolah Otomatis Windows`,
+    title: `${SITE_CONFIG.appName} — Aplikasi Bel Sekolah Otomatis Windows`,
     description: `Software bel sekolah otomatis gratis untuk Windows 10 & 11 (64-bit). Mendukung speaker eksternal jack 3,5 mm, 100% offline, dan tanpa biaya langganan.`,
     images: ["/images/screenshot_real_compact.png"],
   },
@@ -117,7 +117,7 @@ export default async function HomePage() {
               {/* Title & Tagline */}
               <div className="space-y-2">
                 <h1 className="text-4xl font-black tracking-tight text-forest-950 sm:text-5xl lg:text-6xl">
-                  {heroContent.heading || SITE_CONFIG.brandName}
+                  {heroContent.heading || SITE_CONFIG.appName}
                 </h1>
                 <p className="text-xl sm:text-2xl font-bold tracking-tight text-emerald-800">
                   Aplikasi Bel Sekolah Otomatis Windows

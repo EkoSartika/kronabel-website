@@ -4,6 +4,7 @@
  */
 
 export const SITE_CONFIG = {
+  appName: "Kronabel",
   brandName: "KRONABEL",
   brandSubtitle: "Aplikasi Bel Sekolah Otomatis",
   siteUrl: "https://kronabel.vercel.app",
@@ -11,7 +12,7 @@ export const SITE_CONFIG = {
   description:
     "Kelola jadwal bel sekolah secara praktis melalui aplikasi Windows yang mudah digunakan. Gratis, tanpa biaya langganan, dan bekerja 100% offline.",
   targetOS: "Windows 10 & Windows 11 (64-bit)",
-  author: "Pengembang KRONABEL",
+  author: "Pengembang Kronabel",
 
   // Dukungan Pengembang (Saweria)
   donation: {
@@ -34,8 +35,8 @@ export const SITE_CONFIG = {
     // Paket Installer Windows (Pilihan Utama)
     installer: {
       filename: "KRONABEL_Setup_v1.2.4.exe",
-      size: "45.63 MB",
-      sha256: "38e91e93aef130fcff2bcf589379b92ab15e600d5694b2a14eebdac322b9abdf",
+      size: "45.64 MB",
+      sha256: "d0357d41e21ba1d8b862bce1e539962d051274ecde6b5535fd5e436021f163ab",
       downloadUrl:
         "https://github.com/EkoSartika/kronabel/releases/download/v1.2.4/KRONABEL_Setup_v1.2.4.exe",
     },
@@ -44,7 +45,7 @@ export const SITE_CONFIG = {
     portable: {
       filename: "KRONABEL_Portable_v1.2.4.zip",
       size: "79.80 MB",
-      sha256: "7772a0c022dc0b4bd7626aef87e047739502450ea05e8c5ba6ae477fbb041a7c",
+      sha256: "82a82b4c6dbd282d382319e973de5c9bd0461a6d8ab7c4aba1eaea7fba6b7761",
       downloadUrl:
         "https://github.com/EkoSartika/kronabel/releases/download/v1.2.4/KRONABEL_Portable_v1.2.4.zip",
     },

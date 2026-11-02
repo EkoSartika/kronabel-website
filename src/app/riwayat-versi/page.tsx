@@ -38,17 +38,18 @@ export default function ChangelogPage() {
       badge: "Rilis Terbaru (Stabil)",
       badgeColor: "bg-emerald-100 text-emerald-900 border-emerald-300",
       isLatest: true,
-      title: "Rebranding Identitas Resmi KRONABEL & Penyelarasan Ekosistem Windows",
+      title: "Rebranding Identitas Resmi Kronabel & Penyelarasan Ekosistem Windows",
       summary:
-        "Penyelarasan menyeluruh identitas produk menjadi KRONABEL pada seluruh sistem operasi Windows (Windows Installed Apps, Add or Remove Programs, Start Menu, Desktop Shortcut, dan jendela aplikasi), pembaruan nama berkas biner KRONABEL.exe, pemeliharaan kompatibilitas upgrade in-place tanpa entri ganda, serta migrasi data pengguna otomatis tanpa kehilangan jadwal maupun audio.",
+        "Penyelarasan menyeluruh nama aplikasi menjadi Kronabel pada seluruh sistem operasi Windows (Windows Installed Apps, Add or Remove Programs, Start Menu, Desktop Shortcut, dan jendela aplikasi), pengaktifan kedua checkbox installer secara default, pembaruan nama berkas biner KRONABEL.exe, pemeliharaan kompatibilitas upgrade in-place tanpa entri ganda, serta migrasi data pengguna otomatis tanpa kehilangan jadwal maupun audio.",
       changes: [
         {
-          category: "Rebranding Identitas Produk KRONABEL",
+          category: "Rebranding Identitas Produk Kronabel",
           items: [
-            "Penyelarasan nama aplikasi pada daftar Windows Installed Apps dan Add or Remove Programs menjadi 'KRONABEL version 1.2.4' dengan keterangan 'Aplikasi Bel Otomatis Sekolah'.",
-            "Pembaruan shortcut Windows Start Menu dan Desktop Shortcut menjadi 'KRONABEL'.",
-            "Pembaruan jendela utama aplikasi, bilah navigasi, dan dialog Area Pengelola menjadi 'KRONABEL'.",
-            "Penyelarasan biner executable mandiri utama menjadi KRONABEL.exe dengan metadata Windows lengkap (ProductName: KRONABEL, FileDescription: KRONABEL — Aplikasi Bel Otomatis Sekolah).",
+            "Penyelarasan nama aplikasi pada daftar Windows Installed Apps dan Add or Remove Programs menjadi 'Kronabel version 1.2.4' dengan keterangan 'Aplikasi Bel Otomatis Sekolah'.",
+            "Pembaruan shortcut Windows Start Menu dan Desktop Shortcut menjadi 'Kronabel'.",
+            "Konfigurasi Inno Setup Installer: kedua opsi 'Create a desktop shortcut' dan 'Jalankan KRONABEL saat komputer Windows dinyalakan' otomatis tercentang (checked by default).",
+            "Penyesuaian tata letak dashboard: tulisan logo merek KRONABEL diposisikan di tengah horizontal panel kiri sejajar vertikal dengan pusat jam digital.",
+            "Penyelarasan biner executable mandiri utama menjadi KRONABEL.exe dengan metadata Windows lengkap (ProductName: Kronabel, FileDescription: Kronabel — Aplikasi Bel Otomatis Sekolah).",
           ],
         },
         {
@@ -70,8 +71,8 @@ export default function ChangelogPage() {
         {
           category: "Paket Distribusi Resmi v1.2.4",
           items: [
-            "Paket Setup Installer: KRONABEL_Setup_v1.2.4.exe (45.63 MB, SHA-256: 38e91e93aef130fcff2bcf589379b92ab15e600d5694b2a14eebdac322b9abdf).",
-            "Paket Portable ZIP: KRONABEL_Portable_v1.2.4.zip (79.80 MB, SHA-256: 7772a0c022dc0b4bd7626aef87e047739502450ea05e8c5ba6ae477fbb041a7c).",
+            "Paket Setup Installer: KRONABEL_Setup_v1.2.4.exe (45.64 MB, SHA-256: d0357d41e21ba1d8b862bce1e539962d051274ecde6b5535fd5e436021f163ab).",
+            "Paket Portable ZIP: KRONABEL_Portable_v1.2.4.zip (79.80 MB, SHA-256: 82a82b4c6dbd282d382319e973de5c9bd0461a6d8ab7c4aba1eaea7fba6b7761).",
             "Distribusi resmi mandiri bebas biaya lisensi untuk sekolah-sekolah di seluruh Indonesia.",
           ],
         },
